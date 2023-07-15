@@ -1,0 +1,20 @@
+---
+import { getFormattedDate } from "../utils/readingTime";
+export interface Props {
+	date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<time datetime={date ? date.toISOString(): new Date()}>
+
+	{ getFormattedDate(date) }
+	<!-- {
+		date.toLocaleDateString('en-us', {
+			year: 'numeric',
+			month: 'short',
+			day: 'numeric',
+		})
+	} -->
+</time>

@@ -1,0 +1,40 @@
+{
+    "tags" : [
+        {
+            "label": "CSS",
+            "name": "CSS"
+        },
+        {
+            "label": "HTML",
+            "name": "HTML"
+        },
+        {
+            "label": "JavaScript",
+            "name": "JavaScript"
+        },
+        {
+            "label": "AEM",
+            "name": "AEM"
+        },
+        {
+            "label": "Performance",
+            "name": "Performance"
+        },
+        {
+            "label": "A11ty",
+            "name": "A11ty"
+        },
+        {
+            "label": "Frontend",
+            "name": "Frontend"
+        },
+        {
+            "label": "Astro",
+            "name": "Astro"
+        },
+        {
+            "label": "Tina CMS",
+            "name": "Tina CMS"
+        }
+    ] 
+}

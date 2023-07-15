@@ -1,0 +1,15 @@
+---
+const { title, description } = Astro.props;
+---
+<div class="static-head is-horizontal-align banner merge-header-banner">
+    <div class="container-sm-w is-full-width flex f-col">
+        <h1 class="font-primary m-b-1" itemprop="name">{title}</h1>
+        <h3 class="font-secondry m-b-1" itemprop="abstract">{description}</h3> 
+    </div>
+</div>
+
+<style>
+	.static-head {
+        padding-bottom: 4rem;
+    }
+</style>

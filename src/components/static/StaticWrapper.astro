@@ -1,0 +1,14 @@
+---
+import StaticHeader from './StaticHeader.astro';
+import StaticContent from './StaticContent.astro';
+
+const { title, description } = Astro.props;
+---
+
+<article class="tl-blog" itemscope itemtype="https://schema.org/BlogPosting">
+  <StaticHeader title={title} description={description}></StaticHeader>
+  
+  <StaticContent>
+    <slot />
+  </StaticContent>
+</article>
