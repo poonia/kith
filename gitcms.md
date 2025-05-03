@@ -1,8 +1,74 @@
 ---
-repo: poonia/kith
+collections:
+  - name: post
+    git_path: /src/content/blog
+    filename_pattern: title
+    file_extension: .md
+    metadata_schema:
+      - name: title
+        type: title
+        required: true
+      - name: description
+        type: singleline
+        required: true
+      - name: body
+        type: multiline
+        required: true
+      - name: tags
+        type: multi_select
+        required: false
+        allowed_values:
+          - CSS
+          - HTML
+          - JavaScript
+          - AEM
+          - Performance
+          - A11ty
+          - Frontend
+          - Astro
+      - name: pubDate
+        type: datetime
+        required: false
+  - name: snippet
+    git_path: /src/content/snippets
+    filename_pattern: title
+    file_extension: .mdx
+    metadata_schema:
+      - name: title
+        type: title
+        required: true
+      - name: description
+        type: singleline
+        required: false
+      - name: image
+        type: file
+        required: false
+      - name: source
+        type: multiline
+        required: false
+      - name: body
+        type: multiline
+        required: false
+      - name: tags
+        type: multi_select
+        required: false
+        allowed_values:
+          - CSS
+          - Javascript
+          - HTML
+          - AEM
+          - Frontend
+  - name: ''
+    git_path: ''
+    filename_pattern: ''
+    file_extension: .md
+    metadata_schema:
+      - name: title
+        type: title
+        required: true
 media_path: /public/images
+repo: poonia/kith
 website_url: http://kith.dev
-collections: []
 ---
 # GitCMS Configuration File
 > [!WARNING]
