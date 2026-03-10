@@ -1,23 +1,19 @@
 ---
 collections:
-  - name: post
-    git_path: /src/content/blog
+  - file_extension: .md
     filename_pattern: title
-    file_extension: .md
+    git_path: /src/content/blog
     metadata_schema:
       - name: title
+        required: true
         type: title
-        required: true
       - name: description
+        required: true
         type: singleline
-        required: true
       - name: body
-        type: multiline
         required: true
-      - name: tags
-        type: multi_select
-        required: false
-        allowed_values:
+        type: multiline
+      - allowed_values:
           - CSS
           - HTML
           - JavaScript
@@ -26,46 +22,63 @@ collections:
           - A11ty
           - Frontend
           - Astro
-      - name: pubDate
-        type: datetime
+          - CSS
+          - HTML
+          - JavaScript
+          - AEM
+          - Performance
+          - A11ty
+          - Frontend
+          - Astro
+        name: tags
         required: false
-  - name: snippet
-    git_path: /src/content/snippets
+        type: multi_select
+      - name: pubDate
+        required: false
+        type: datetime
+    name: post
+  - file_extension: .mdx
     filename_pattern: title
-    file_extension: .mdx
+    git_path: /src/content/snippets
     metadata_schema:
       - name: title
-        type: title
         required: true
+        type: title
       - name: description
+        required: false
         type: singleline
-        required: false
       - name: image
+        required: false
         type: file
-        required: false
       - name: source
-        type: multiline
         required: false
+        type: multiline
       - name: body
+        required: false
         type: multiline
-        required: false
-      - name: tags
-        type: multi_select
-        required: false
-        allowed_values:
+      - allowed_values:
           - CSS
           - Javascript
           - HTML
           - AEM
           - Frontend
-  - name: ''
-    git_path: ''
+          - CSS
+          - Javascript
+          - HTML
+          - AEM
+          - Frontend
+        name: tags
+        required: false
+        type: multi_select
+    name: snippet
+  - file_extension: .md
     filename_pattern: ''
-    file_extension: .md
+    git_path: ''
     metadata_schema:
       - name: title
-        type: title
         required: true
+        type: title
+    name: ''
 media_path: /public/images
 repo: poonia/kith
 website_url: http://kith.dev
