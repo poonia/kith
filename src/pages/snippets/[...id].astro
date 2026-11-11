@@ -10,9 +10,9 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, remarkPluginFrontmatter } = await render(entry);
 ---
 
-<EntryLayout entry={entry}>
+<EntryLayout entry={entry} hasMath={Boolean(remarkPluginFrontmatter.hasMath)}>
   <Content />
 </EntryLayout>

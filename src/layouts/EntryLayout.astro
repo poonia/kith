@@ -4,12 +4,15 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '@/components/FormattedDate.astro';
 import { resolveImage } from '@/lib/images';
+import katexCss from 'katex/dist/katex.min.css?url';
 
 interface Props {
   entry: CollectionEntry<'blog'> | CollectionEntry<'snippets'>;
+  /** Load KaTeX CSS only on entries that contain maths. */
+  hasMath?: boolean;
 }
 
-const { entry } = Astro.props;
+const { entry, hasMath = false } = Astro.props;
 const { title, description, pubDate, tags, draft } = entry.data;
 const updatedDate = 'updatedDate' in entry.data ? entry.data.updatedDate : undefined;
 const canonical = 'canonical' in entry.data ? entry.data.canonical : undefined;
@@ -18,6 +21,7 @@ const heroAlt = 'heroAlt' in entry.data ? entry.data.heroAlt : undefined;
 ---
 
 <BaseLayout title={title} description={description} canonical={canonical} noindex={draft}>
+  {hasMath && <link slot="head" rel="stylesheet" href={katexCss} />}
   <article class="container entry">
     <header class="entry-header measure">
       {draft && <p class="draft">Draft — not visible in production</p>}
@@ -45,6 +49,13 @@ const heroAlt = 'heroAlt' in entry.data ? entry.data.heroAlt : undefined;
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  import mediumZoom from 'medium-zoom';
+  // Click-to-zoom for content images (skip linked images and diagrams).
+  const zoomable = [...document.querySelectorAll<HTMLImageElement>('.prose img')].filter((img) => !img.closest('a, .diagram, .no-zoom'));
+  if (zoomable.length) mediumZoom(zoomable, { margin: 24, background: 'var(--color-bg)' });
+</script>
 
 <style>
   .entry {

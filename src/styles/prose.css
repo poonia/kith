@@ -59,35 +59,6 @@
   border-radius: var(--radius-sm);
 }
 
-.prose pre {
-  font-family: var(--font-code);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  padding: var(--space-4);
-  overflow-x: auto;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  tab-size: 2;
-}
-
-/* Shiki dual themes (replaced by Expressive Code in Phase 2) */
-.prose pre.astro-code,
-.prose pre.astro-code span {
-  color: var(--shiki-light);
-  background-color: var(--color-surface);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .prose pre.astro-code,
-  :root:not([data-theme='light']) .prose pre.astro-code span {
-    color: var(--shiki-dark);
-  }
-}
-:root[data-theme='dark'] .prose pre.astro-code,
-:root[data-theme='dark'] .prose pre.astro-code span {
-  color: var(--shiki-dark);
-}
-
 .prose img {
   display: block;
   border-radius: var(--radius-md);

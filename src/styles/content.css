@@ -1,0 +1,224 @@
+/* Rich Markdown elements: callouts, diagrams, file trees, figures, maths, footnotes. */
+
+/* Element colours (token-based; dark values come from the theme layer below). */
+:root {
+  --callout-note: #1f5fbf;
+  --callout-tip: #1a7f37;
+  --callout-important: #8250df;
+  --callout-warning: #9a6700;
+  --callout-caution: #cf222e;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --callout-note: #8ab4f8;
+    --callout-tip: #57c27a;
+    --callout-important: #b392f0;
+    --callout-warning: #d4a72c;
+    --callout-caution: #f47067;
+  }
+}
+:root[data-theme='dark'] {
+  --callout-note: #8ab4f8;
+  --callout-tip: #57c27a;
+  --callout-important: #b392f0;
+  --callout-warning: #d4a72c;
+  --callout-caution: #f47067;
+}
+
+/* Code blocks (Expressive Code) — spacing within prose */
+.prose .expressive-code {
+  margin-block-start: 1.5em;
+}
+
+/* ---------- Callouts ---------- */
+.prose .callout {
+  --c: var(--callout-note);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--c) 30%, var(--color-border));
+  border-inline-start: 3px solid var(--c);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--c) 6%, var(--color-bg));
+}
+.prose .callout[data-callout='tip'] { --c: var(--callout-tip); }
+.prose .callout[data-callout='important'] { --c: var(--callout-important); }
+.prose .callout[data-callout='warning'] { --c: var(--callout-warning); }
+.prose .callout[data-callout='caution'] { --c: var(--callout-caution); }
+
+.prose .callout-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--c);
+}
+.prose .callout-title-icon {
+  display: inline-flex;
+  flex: none;
+}
+.prose summary.callout-title {
+  cursor: pointer;
+  list-style: none;
+}
+.prose summary.callout-title::-webkit-details-marker {
+  display: none;
+}
+.prose .callout-fold-icon {
+  display: inline-flex;
+  margin-inline-start: auto;
+  transition: transform 0.15s ease;
+}
+.prose details.callout:not([open]) .callout-fold-icon {
+  transform: rotate(-90deg);
+}
+.prose .callout-content {
+  margin-top: var(--space-2);
+}
+.prose .callout-content > :first-child { margin-top: 0; }
+.prose .callout-content > :last-child { margin-bottom: 0; }
+.prose .callout-content > * + * { margin-top: 0.75em; }
+
+/* ---------- Mermaid diagrams ---------- */
+.prose .diagram {
+  margin-inline: 0;
+  padding: var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  text-align: center;
+}
+.prose .diagram svg {
+  display: block;
+  margin-inline: auto;
+  width: 100%;
+  height: auto;
+  max-width: var(--w);
+  min-width: calc(var(--w) * 0.75);
+}
+.prose .diagram svg,
+.prose .diagram svg * {
+  font-family: var(--font-body) !important;
+}
+.diagram-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .diagram-light { display: none; }
+  :root:not([data-theme='light']) .diagram-dark { display: block; }
+}
+:root[data-theme='dark'] .diagram-light { display: none; }
+:root[data-theme='dark'] .diagram-dark { display: block; }
+
+/* ---------- Figures & captions (images, diagrams, trees) ---------- */
+.prose figure {
+  margin-inline: 0;
+}
+.prose figcaption {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+.prose .medium-zoom-image {
+  cursor: zoom-in;
+}
+.medium-zoom-overlay,
+.medium-zoom-image--opened {
+  z-index: 50;
+}
+
+/* ---------- File tree ---------- */
+.prose .file-tree {
+  margin-inline: 0;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-code);
+  font-size: var(--text-sm);
+  line-height: 1.9;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+.prose .file-tree figcaption {
+  margin: 0 0 var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-body);
+  text-align: start;
+}
+.prose .file-tree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.prose .file-tree ul ul {
+  margin-inline-start: 0.55em;
+  padding-inline-start: 1em;
+  border-inline-start: 1px solid var(--color-border);
+}
+.prose .file-tree li {
+  margin: 0;
+  white-space: nowrap;
+}
+.prose .file-tree summary {
+  cursor: pointer;
+  list-style: none;
+  border-radius: var(--radius-sm);
+}
+.prose .file-tree summary::-webkit-details-marker {
+  display: none;
+}
+.prose .file-tree :is(summary, .ft-row) {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+}
+.prose .file-tree .ft-icon {
+  flex: none;
+  color: var(--color-text-subtle);
+}
+.prose .file-tree .ft-dir > .ft-row .ft-icon,
+.prose .file-tree .ft-dir > details > summary .ft-icon {
+  color: var(--color-link);
+}
+.prose .file-tree .ft-highlight {
+  padding: 0 0.3em;
+  border-radius: var(--radius-sm);
+  background: var(--color-selection);
+  font-weight: 600;
+}
+.prose .file-tree .ft-comment {
+  margin-inline-start: var(--space-3);
+  color: var(--color-text-subtle);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+}
+.prose .file-tree .ft-placeholder {
+  color: var(--color-text-subtle);
+}
+
+/* ---------- Maths ---------- */
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-block: var(--space-2);
+}
+
+/* ---------- Footnotes & task lists ---------- */
+.prose .footnotes {
+  margin-top: var(--space-12);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.prose .footnotes h2 {
+  font-size: var(--text-sm);
+  margin-top: 0;
+}
+.prose .contains-task-list {
+  list-style: none;
+  padding-inline-start: 0.25em;
+}
+.prose .task-list-item input {
+  margin-inline-end: 0.5em;
+}
