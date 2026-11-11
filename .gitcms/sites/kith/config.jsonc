@@ -9,7 +9,7 @@
         "references": {
           "write": {
             "mode": "root_relative",
-            "base_path": "/"
+            "base_path": "/images/"
           },
           "allow_default_library_fallback": true
         },
@@ -18,7 +18,7 @@
         },
         "driver": "git",
         "storage": {
-          "root_path": "public"
+          "root_path": "src/assets/images"
         }
       }
     ]
@@ -28,7 +28,6 @@
   "publishing_mode": "editorial_workflow",
   "collections": [
     "blog",
-    "posts",
     "snippets"
   ]
 }

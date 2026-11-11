@@ -1,0 +1,82 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import FormattedDate from '@/components/FormattedDate.astro';
+import { resolveImage } from '@/lib/images';
+
+interface Props {
+  entry: CollectionEntry<'blog'> | CollectionEntry<'snippets'>;
+}
+
+const { entry } = Astro.props;
+const { title, description, pubDate, tags, draft } = entry.data;
+const updatedDate = 'updatedDate' in entry.data ? entry.data.updatedDate : undefined;
+const canonical = 'canonical' in entry.data ? entry.data.canonical : undefined;
+const hero = 'heroImage' in entry.data ? resolveImage(entry.data.heroImage) : undefined;
+const heroAlt = 'heroAlt' in entry.data ? entry.data.heroAlt : undefined;
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} noindex={draft}>
+  <article class="container entry">
+    <header class="entry-header measure">
+      {draft && <p class="draft">Draft — not visible in production</p>}
+      <h1>{title}</h1>
+      <p class="meta muted">
+        <FormattedDate date={pubDate} />
+        {
+          updatedDate && (
+            <>
+              {' · Updated '}
+              <FormattedDate date={updatedDate} />
+            </>
+          )
+        }
+        {tags.length > 0 && <span> · {tags.join(', ')}</span>}
+      </p>
+    </header>
+    {
+      hero && (
+        <Image class="hero" src={hero} alt={heroAlt ?? ''} widths={[720, 1080, 1440]} sizes="(min-width: 72rem) 68ch, 100vw" loading="eager" fetchpriority="high" />
+      )
+    }
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .entry {
+    padding-block: var(--space-12);
+  }
+  .entry-header {
+    margin-bottom: var(--space-8);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+    line-height: var(--leading-tight);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  .meta {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-sm);
+  }
+  .draft {
+    display: inline-block;
+    margin: 0 0 var(--space-3);
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-muted);
+  }
+  .hero {
+    width: 100%;
+    max-width: var(--measure);
+    margin-bottom: var(--space-8);
+    border-radius: var(--radius-md);
+  }
+</style>

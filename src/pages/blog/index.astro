@@ -1,0 +1,37 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EntryList from '@/components/EntryList.astro';
+import { getPublished } from '@/lib/content';
+
+const entries = await getPublished('blog');
+---
+
+<BaseLayout title="Blog" description="Long-form articles on frontend architecture, design systems and AEM.">
+  <div class="container listing">
+    <header class="measure">
+      <h1>Blog</h1>
+      <p class="muted">Long-form articles on frontend architecture, design systems and AEM.</p>
+    </header>
+    <EntryList entries={entries} base="/blog/" />
+  </div>
+</BaseLayout>
+
+<style>
+  .listing {
+    padding-block: var(--space-12);
+  }
+  header {
+    margin-bottom: var(--space-12);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+    letter-spacing: -0.025em;
+  }
+  header p {
+    margin: var(--space-2) 0 0;
+  }
+  .listing :global(.entries) {
+    max-width: var(--measure);
+  }
+</style>

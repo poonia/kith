@@ -1,0 +1,41 @@
+---
+import { Font } from 'astro:assets';
+import { SITE } from '@/consts';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+
+const { title, description = SITE.description, canonical, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} · ${SITE.title}` : SITE.title;
+const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+{noindex && <meta name="robots" content="noindex" />}
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0e0f11" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta name="generator" content={Astro.generator} />
+
+<Font cssVariable="--font-sans" preload={[{ style: 'normal' }]} />
+<Font cssVariable="--font-mono" />
+
+<!-- Apply the saved theme before first paint to avoid a flash. -->
+<script is:inline>
+  (() => {
+    try {
+      const t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch {}
+  })();
+</script>
