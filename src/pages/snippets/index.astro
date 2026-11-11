@@ -10,7 +10,9 @@ const entries = await getPublished('snippets');
   <div class="container listing">
     <header class="measure">
       <h1>Snippets</h1>
-      <p class="muted">Short notes, TILs and reusable code. Browse by <a href="/tags/">tag</a>.</p>
+      <p class="muted">
+        Short notes, TILs and reusable code. Browse by <a href="/tags/">tag</a>.
+      </p>
     </header>
     <div class="measure">
       <EntryList entries={entries} />

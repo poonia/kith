@@ -1,0 +1,20 @@
+// Content lint. Posts are written in the GitCMS editor, so whitespace and style
+// rules are off; only rules that catch real rendering, navigation or
+// accessibility problems are enabled.
+{
+  "config": {
+    "default": false,
+    "MD001": true, // heading levels only go up one at a time (TOC + screen readers)
+    "MD011": true, // reversed link syntax (text)[url]
+    "MD034": true, // bare URLs
+    "MD039": true, // spaces inside link text
+    "MD040": true, // fenced code needs a language (syntax highlighting, terminal frames)
+    "MD042": true, // empty links
+    "MD045": true, // images need alt text
+    "MD051": true, // #fragment links point at a real heading
+    "MD052": true, // reference links are defined
+    "MD059": true, // descriptive link text (no "click here")
+  },
+  "globs": ["src/content/**/*.md"],
+  "ignores": ["node_modules", "dist"],
+}

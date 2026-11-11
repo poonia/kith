@@ -27,3 +27,10 @@ export const GISCUS = {
   category: 'Comments',
   categoryId: '',
 } as const;
+
+/**
+ * Cloudflare Web Analytics (cookie-free, no banner needed). Added to production
+ * builds only, once a token is set. Get it from Cloudflare dashboard → Analytics
+ * & Logs → Web Analytics → Add a site (choose the manual JS snippet).
+ */
+export const CF_ANALYTICS_TOKEN = '';

@@ -23,3 +23,6 @@ pnpm-debug.log*
 
 # local Claude Code state
 .claude/
+
+# Lighthouse CI local output
+.lighthouseci/

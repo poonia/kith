@@ -8,9 +8,7 @@ import { z } from 'astro/zod';
  */
 
 /** GitCMS writes `/images/...`; files live in src/assets/images. */
-const imagePath = z
-  .string()
-  .regex(/^\/images\//, 'Image paths must start with /images/ (GitCMS media library)');
+const imagePath = z.string().regex(/^\/images\//, 'Image paths must start with /images/ (GitCMS media library)');
 
 const tags = z
   .array(z.string().trim().min(1))

@@ -19,7 +19,10 @@ export const getStaticPaths = (async () => {
       params: { path: `snippets/${e.id}` },
       props: { title: e.data.title, kicker: 'Snippet', meta: formatDate(e.data.pubDate), tags: e.data.tags },
     })),
-    ...pages.map((e) => ({ params: { path: `pages/${e.id}` }, props: { title: e.data.title, meta: e.data.description } })),
+    ...pages.map((e) => ({
+      params: { path: `pages/${e.id}` },
+      props: { title: e.data.title, meta: e.data.description },
+    })),
   ];
   return paths;
 }) satisfies GetStaticPaths;

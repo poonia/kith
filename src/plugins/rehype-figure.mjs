@@ -15,7 +15,15 @@ export function rehypeFigure() {
               type: 'element',
               tagName: 'figure',
               properties: {},
-              children: [img, { type: 'element', tagName: 'figcaption', properties: {}, children: [{ type: 'text', value: caption }] }],
+              children: [
+                img,
+                {
+                  type: 'element',
+                  tagName: 'figcaption',
+                  properties: {},
+                  children: [{ type: 'text', value: caption }],
+                },
+              ],
             };
             return;
           }

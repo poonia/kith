@@ -14,7 +14,7 @@ This draft exercises every element. It only renders in `npm run dev`. Check it a
 
 ## Text
 
-Body text with **bold**, _italic_, ~~strikethrough~~, `inline code`, a [link](https://astro.build) and a footnote.[^1]
+Body text with **bold**, _italic_, ~~strikethrough~~, `inline code`, a link to [the Astro docs](https://docs.astro.build) and a footnote.[^1]
 
 > A plain blockquote for quoted material.
 

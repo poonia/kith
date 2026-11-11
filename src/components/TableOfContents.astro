@@ -11,37 +11,37 @@ const { headings, variant } = Astro.props;
 const items = headings.filter((h) => h.depth >= 2 && h.depth <= 3 && h.slug !== 'footnote-label');
 ---
 
-{
-  items.length >= 2 && (
-    <Fragment>
-      {variant === 'sidebar' ? (
-        <nav class="toc toc-sidebar" aria-labelledby="toc-heading">
-          <h2 id="toc-heading">On this page</h2>
+{items.length >= 2 && (
+  <Fragment>
+    {variant === 'sidebar' ? (
+      <nav class="toc toc-sidebar" aria-labelledby="toc-heading">
+        <h2 id="toc-heading">On this page</h2>
+        <ul>
+          {items.map((h) => (
+            <li class={`depth-${h.depth}`}>
+              <a href={`#${h.slug}`} data-toc-link={h.slug}>
+                {h.text}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ) : (
+      <details class="toc toc-inline">
+        <summary>On this page</summary>
+        <nav aria-label="On this page">
           <ul>
             {items.map((h) => (
               <li class={`depth-${h.depth}`}>
-                <a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a>
+                <a href={`#${h.slug}`}>{h.text}</a>
               </li>
             ))}
           </ul>
         </nav>
-      ) : (
-        <details class="toc toc-inline">
-          <summary>On this page</summary>
-          <nav aria-label="On this page">
-            <ul>
-              {items.map((h) => (
-                <li class={`depth-${h.depth}`}>
-                  <a href={`#${h.slug}`}>{h.text}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </details>
-      )}
-    </Fragment>
-  )
-}
+      </details>
+    )}
+  </Fragment>
+)}
 
 <script>
   // Highlight the section currently being read in the sidebar TOC.
@@ -54,7 +54,9 @@ const items = headings.filter((h) => h.depth >= 2 && h.depth <= 3 && h.slug !== 
 
   if (targets.length) {
     const setActive = (id: string) => {
-      links.forEach((as, key) => as.forEach((a) => (key === id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'))));
+      links.forEach((as, key) =>
+        as.forEach((a) => (key === id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'))),
+      );
     };
     const update = () => {
       const offset = window.innerHeight * 0.25;

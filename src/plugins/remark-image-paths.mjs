@@ -15,7 +15,11 @@ export function remarkImagePaths() {
 
     /** @param {any} node */
     const walk = (node) => {
-      if ((node.type === 'image' || node.type === 'definition') && typeof node.url === 'string' && node.url.startsWith(PREFIX)) {
+      if (
+        (node.type === 'image' || node.type === 'definition') &&
+        typeof node.url === 'string' &&
+        node.url.startsWith(PREFIX)
+      ) {
         const target = path.join(imagesDir, decodeURI(node.url.slice(PREFIX.length)));
         let rel = path.relative(fromDir, target).split(path.sep).join('/');
         if (!rel.startsWith('.')) rel = `./${rel}`;

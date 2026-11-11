@@ -7,17 +7,15 @@ interface Props {
 const { tags } = Astro.props;
 ---
 
-{
-  tags.length > 0 && (
-    <ul class="tags" aria-label="Tags">
-      {tags.map((t) => (
-        <li>
-          <a href={tagHref(t)}>#{t}</a>
-        </li>
-      ))}
-    </ul>
-  )
-}
+{tags.length > 0 && (
+  <ul class="tags" aria-label="Tags">
+    {tags.map((t) => (
+      <li>
+        <a href={tagHref(t)}>#{t}</a>
+      </li>
+    ))}
+  </ul>
+)}
 
 <style>
   .tags {

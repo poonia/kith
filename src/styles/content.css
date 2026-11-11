@@ -39,10 +39,18 @@
   border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--c) 6%, var(--color-bg));
 }
-.prose .callout[data-callout='tip'] { --c: var(--callout-tip); }
-.prose .callout[data-callout='important'] { --c: var(--callout-important); }
-.prose .callout[data-callout='warning'] { --c: var(--callout-warning); }
-.prose .callout[data-callout='caution'] { --c: var(--callout-caution); }
+.prose .callout[data-callout='tip'] {
+  --c: var(--callout-tip);
+}
+.prose .callout[data-callout='important'] {
+  --c: var(--callout-important);
+}
+.prose .callout[data-callout='warning'] {
+  --c: var(--callout-warning);
+}
+.prose .callout[data-callout='caution'] {
+  --c: var(--callout-caution);
+}
 
 .prose .callout-title {
   display: flex;
@@ -74,9 +82,15 @@
 .prose .callout-content {
   margin-top: var(--space-2);
 }
-.prose .callout-content > :first-child { margin-top: 0; }
-.prose .callout-content > :last-child { margin-bottom: 0; }
-.prose .callout-content > * + * { margin-top: 0.75em; }
+.prose .callout-content > :first-child {
+  margin-top: 0;
+}
+.prose .callout-content > :last-child {
+  margin-bottom: 0;
+}
+.prose .callout-content > * + * {
+  margin-top: 0.75em;
+}
 
 /* ---------- Mermaid diagrams ---------- */
 .prose .diagram {
@@ -100,13 +114,23 @@
 .prose .diagram svg * {
   font-family: var(--font-body) !important;
 }
-.diagram-dark { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .diagram-light { display: none; }
-  :root:not([data-theme='light']) .diagram-dark { display: block; }
+.diagram-dark {
+  display: none;
 }
-:root[data-theme='dark'] .diagram-light { display: none; }
-:root[data-theme='dark'] .diagram-dark { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .diagram-light {
+    display: none;
+  }
+  :root:not([data-theme='light']) .diagram-dark {
+    display: block;
+  }
+}
+:root[data-theme='dark'] .diagram-light {
+  display: none;
+}
+:root[data-theme='dark'] .diagram-dark {
+  display: block;
+}
 
 /* ---------- Figures & captions (images, diagrams, trees) ---------- */
 .prose figure {

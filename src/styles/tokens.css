@@ -9,6 +9,7 @@
   --gray-100: #ebebe8;
   --gray-200: #dcdcd8;
   --gray-400: #9a9a94;
+  --gray-500: #6e6e69; /* subtle text: ≥4.5:1 on bg and surface */
   --gray-600: #5e5e59;
   --gray-800: #2b2b28;
   --gray-900: #1c1c1a;
@@ -17,6 +18,7 @@
   --ink-100: #1d2024;
   --ink-200: #2a2e33;
   --ink-400: #6b7078;
+  --ink-500: #878c94; /* subtle text: ≥4.5:1 on bg and surface */
   --ink-600: #a3a8b0;
   --ink-800: #d9dce1;
   --ink-900: #eceef1;
@@ -61,7 +63,7 @@
   --color-border: var(--gray-200);
   --color-text: var(--gray-900);
   --color-text-muted: var(--gray-600);
-  --color-text-subtle: var(--gray-400);
+  --color-text-subtle: var(--gray-500);
   --color-link: var(--blue-600);
   --color-link-hover: var(--blue-700);
   --color-focus: var(--blue-600);
@@ -77,7 +79,7 @@
     --color-border: var(--ink-200);
     --color-text: var(--ink-900);
     --color-text-muted: var(--ink-600);
-    --color-text-subtle: var(--ink-400);
+    --color-text-subtle: var(--ink-500);
     --color-link: var(--blue-300);
     --color-link-hover: var(--blue-200);
     --color-focus: var(--blue-300);
@@ -93,7 +95,7 @@
   --color-border: var(--ink-200);
   --color-text: var(--ink-900);
   --color-text-muted: var(--ink-600);
-  --color-text-subtle: var(--ink-400);
+  --color-text-subtle: var(--ink-500);
   --color-link: var(--blue-300);
   --color-link-hover: var(--blue-200);
   --color-focus: var(--blue-300);

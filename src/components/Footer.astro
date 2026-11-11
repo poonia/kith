@@ -16,16 +16,16 @@ const links = [
 
 <footer class="site-footer">
   <div class="container inner">
-    <p>© {year} {SITE.author}</p>
+    <p>
+      © {year} {SITE.author}
+    </p>
     <nav aria-label="Footer">
       <ul>
-        {
-          links.map((l) => (
-            <li>
-              <a href={l.href}>{l.label}</a>
-            </li>
-          ))
-        }
+        {links.map((l) => (
+          <li>
+            <a href={l.href}>{l.label}</a>
+          </li>
+        ))}
       </ul>
     </nav>
   </div>

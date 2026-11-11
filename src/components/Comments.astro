@@ -4,21 +4,19 @@ import { GISCUS } from '@/consts';
 const enabled = Boolean(GISCUS.repoId && GISCUS.categoryId);
 ---
 
-{
-  enabled && (
-    <section class="comments" aria-labelledby="comments-heading" data-pagefind-ignore>
-      <h2 id="comments-heading">Comments</h2>
-      <div
-        class="giscus-mount"
-        data-repo={GISCUS.repo}
-        data-repo-id={GISCUS.repoId}
-        data-category={GISCUS.category}
-        data-category-id={GISCUS.categoryId}
-      />
-      <noscript>Comments need JavaScript (they're powered by GitHub Discussions).</noscript>
-    </section>
-  )
-}
+{enabled && (
+  <section class="comments" aria-labelledby="comments-heading" data-pagefind-ignore>
+    <h2 id="comments-heading">Comments</h2>
+    <div
+      class="giscus-mount"
+      data-repo={GISCUS.repo}
+      data-repo-id={GISCUS.repoId}
+      data-category={GISCUS.category}
+      data-category-id={GISCUS.categoryId}
+    />
+    <noscript>Comments need JavaScript (they're powered by GitHub Discussions).</noscript>
+  </section>
+)}
 
 <script>
   // Load giscus only when the comments come into view, and keep its theme in

@@ -2,10 +2,18 @@
 import Icon from './Icon.astro';
 ---
 
-<button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K">
+<button
+  class="search-trigger"
+  type="button"
+  data-search-open
+  aria-haspopup="dialog"
+  aria-keyshortcuts="Control+K Meta+K"
+>
   <Icon name="search" size={16} />
   <span class="label">Search</span>
-  <kbd class="shortcut" aria-hidden="true">⌘K</kbd>
+  <kbd class="shortcut" aria-hidden="true">
+    ⌘K
+  </kbd>
 </button>
 
 <dialog class="search-dialog" aria-label="Search the site">
@@ -48,7 +56,10 @@ import Icon from './Icon.astro';
     });
 
   const loadPagefind = () =>
-    (loaded ??= Promise.all([loadAsset('link', '/pagefind/pagefind-ui.css'), loadAsset('script', '/pagefind/pagefind-ui.js')])
+    (loaded ??= Promise.all([
+      loadAsset('link', '/pagefind/pagefind-ui.css'),
+      loadAsset('script', '/pagefind/pagefind-ui.js'),
+    ])
       .then(() => {
         new window.PagefindUI!({
           element: mount,
@@ -59,7 +70,8 @@ import Icon from './Icon.astro';
         });
       })
       .catch(() => {
-        mount.innerHTML = '<p class="search-unavailable">Search is available on the built site (<code>npm run build &amp;&amp; npm run preview</code>).</p>';
+        mount.innerHTML =
+          '<p class="search-unavailable">Search is available on the built site (<code>npm run build &amp;&amp; npm run preview</code>).</p>';
       }));
 
   const open = async () => {

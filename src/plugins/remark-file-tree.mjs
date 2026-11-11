@@ -88,7 +88,11 @@ function renderNode(n) {
   return `<li class="${isDir ? 'ft-dir' : 'ft-file'}"><span class="ft-row">${entry}</span></li>`;
 }
 
-const titleFrom = (meta) => meta?.match(/title=(?:"([^"]*)"|'([^']*)')/)?.slice(1).find(Boolean);
+const titleFrom = (meta) =>
+  meta
+    ?.match(/title=(?:"([^"]*)"|'([^']*)')/)
+    ?.slice(1)
+    .find(Boolean);
 
 export function remarkFileTree() {
   /** @param {any} tree */

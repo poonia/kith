@@ -13,28 +13,26 @@ const { entries, showType = false, headingLevel = 'h2' } = Astro.props;
 const H = headingLevel;
 ---
 
-{
-  entries.length === 0 ? (
-    <p class="muted">Nothing published yet.</p>
-  ) : (
-    <ul class="entries">
-      {entries.map((e) => (
-        <li>
-          <H class="title">
-            <a href={entryHref(e)}>{e.data.title}</a>
-            {e.data.draft && <span class="badge">Draft</span>}
-            {showType && e.collection === 'snippets' && <span class="badge">Snippet</span>}
-          </H>
-          <p class="muted">{e.data.description}</p>
-          <div class="meta">
-            <FormattedDate date={e.data.pubDate} />
-            <TagList tags={e.data.tags} />
-          </div>
-        </li>
-      ))}
-    </ul>
-  )
-}
+{entries.length === 0 ? (
+  <p class="muted">Nothing published yet.</p>
+) : (
+  <ul class="entries">
+    {entries.map((e) => (
+      <li>
+        <H class="title">
+          <a href={entryHref(e)}>{e.data.title}</a>
+          {e.data.draft && <span class="badge">Draft</span>}
+          {showType && e.collection === 'snippets' && <span class="badge">Snippet</span>}
+        </H>
+        <p class="muted">{e.data.description}</p>
+        <div class="meta">
+          <FormattedDate date={e.data.pubDate} />
+          <TagList tags={e.data.tags} />
+        </div>
+      </li>
+    ))}
+  </ul>
+)}
 
 <style>
   .entries {

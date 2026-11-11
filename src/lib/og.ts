@@ -12,10 +12,20 @@ const font = (weight: 400 | 600 | 700) =>
 
 let fonts: Promise<{ name: string; data: Buffer; weight: 400 | 600 | 700; style: 'normal' }[]> | undefined;
 const loadFonts = () =>
-  (fonts ??= Promise.all(([400, 600, 700] as const).map(async (weight) => ({ name: 'Inter', data: await font(weight), weight, style: 'normal' as const }))));
+  (fonts ??= Promise.all(
+    ([400, 600, 700] as const).map(async (weight) => ({
+      name: 'Inter',
+      data: await font(weight),
+      weight,
+      style: 'normal' as const,
+    })),
+  ));
 
 type Node = { type: string; props: Record<string, unknown> & { children?: unknown } };
-const h = (type: string, style: Record<string, unknown>, children?: unknown): Node => ({ type, props: { style, children } });
+const h = (type: string, style: Record<string, unknown>, children?: unknown): Node => ({
+  type,
+  props: { style, children },
+});
 
 const C = {
   bg: '#0e0f11',
@@ -52,26 +62,58 @@ export async function renderOgImage({ title, kicker, meta, tags = [] }: OgInput)
       borderTop: `8px solid ${C.accent}`,
     },
     [
-      h('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 28, color: C.muted }, [
-        h('div', { display: 'flex', fontWeight: 700, color: C.text, letterSpacing: '-0.02em' }, SITE.title),
-        kicker ? h('div', { display: 'flex', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em', fontSize: 22, color: C.accent }, kicker) : h('div', {}, ''),
-      ]),
       h(
         'div',
-        { display: 'flex', fontSize: titleSize, fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.03em', maxWidth: '1000px' },
+        { display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 28, color: C.muted },
+        [
+          h('div', { display: 'flex', fontWeight: 700, color: C.text, letterSpacing: '-0.02em' }, SITE.title),
+          kicker
+            ? h(
+                'div',
+                {
+                  display: 'flex',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  fontSize: 22,
+                  color: C.accent,
+                },
+                kicker,
+              )
+            : h('div', {}, ''),
+        ],
+      ),
+      h(
+        'div',
+        {
+          display: 'flex',
+          fontSize: titleSize,
+          fontWeight: 700,
+          lineHeight: 1.15,
+          letterSpacing: '-0.03em',
+          maxWidth: '1000px',
+        },
         title,
       ),
-      h('div', { display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 26, color: C.muted }, [
-        h('div', { display: 'flex', gap: '20px' }, [
-          ...(meta ? [h('div', { display: 'flex' }, meta)] : []),
-          ...tags.slice(0, 3).map((t) => h('div', { display: 'flex', color: C.accent }, `#${t}`)),
-        ]),
-        h('div', { display: 'flex' }, SITE.author),
-      ]),
+      h(
+        'div',
+        { display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 26, color: C.muted },
+        [
+          h('div', { display: 'flex', gap: '20px' }, [
+            ...(meta ? [h('div', { display: 'flex' }, meta)] : []),
+            ...tags.slice(0, 3).map((t) => h('div', { display: 'flex', color: C.accent }, `#${t}`)),
+          ]),
+          h('div', { display: 'flex' }, SITE.author),
+        ],
+      ),
     ],
   );
 
-  const svg = await satori(tree as Parameters<typeof satori>[0], { width: 1200, height: 630, fonts: await loadFonts() });
+  const svg = await satori(tree as Parameters<typeof satori>[0], {
+    width: 1200,
+    height: 630,
+    fonts: await loadFonts(),
+  });
   return new Uint8Array(await sharp(Buffer.from(svg)).png({ compressionLevel: 9 }).toBuffer());
 }
 

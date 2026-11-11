@@ -66,29 +66,45 @@ const jsonLd = {
   <div class="container entry">
     <article class="entry-main" data-pagefind-body>
       <header class="entry-header">
-        {draft && <p class="draft" data-pagefind-ignore>Draft — not visible in production</p>}
-        {!isBlog && <p class="kicker" data-pagefind-ignore><a href="/snippets/">Snippet</a></p>}
+        {draft && (
+          <p class="draft" data-pagefind-ignore>
+            Draft — not visible in production
+          </p>
+        )}
+        {!isBlog && (
+          <p class="kicker" data-pagefind-ignore>
+            <a href="/snippets/">Snippet</a>
+          </p>
+        )}
         <h1 data-pagefind-meta="title">{title}</h1>
         <div class="meta" data-pagefind-ignore>
           <FormattedDate date={pubDate} />
           {readingTime && <span>{readingTime} min read</span>}
-          {
-            updatedDate && (
-              <span class="updated">
-                Updated <FormattedDate date={updatedDate} />
-              </span>
-            )
-          }
+          {updatedDate && (
+            <span class="updated">
+              Updated <FormattedDate date={updatedDate} />
+            </span>
+          )}
         </div>
-        {tags.length > 0 && <div class="entry-tags" data-pagefind-ignore><TagList tags={tags} /></div>}
+        {tags.length > 0 && (
+          <div class="entry-tags" data-pagefind-ignore>
+            <TagList tags={tags} />
+          </div>
+        )}
         <meta data-pagefind-meta="date[content]" content={pubDate.toISOString().slice(0, 10)} />
       </header>
 
-      {
-        hero && (
-          <Image class="hero" src={hero} alt={heroAlt ?? ''} widths={[720, 1080, 1440]} sizes="(min-width: 72rem) 68ch, 100vw" loading="eager" fetchpriority="high" />
-        )
-      }
+      {hero && (
+        <Image
+          class="hero"
+          src={hero}
+          alt={heroAlt ?? ''}
+          widths={[720, 1080, 1440]}
+          sizes="(min-width: 72rem) 68ch, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      )}
 
       <div class="toc-mobile" data-pagefind-ignore>
         <TableOfContents headings={headings} variant="inline" />
@@ -98,13 +114,11 @@ const jsonLd = {
         <slot />
       </div>
 
-      {
-        source && (
-          <p class="source" data-pagefind-ignore>
-            Source: <a href={source}>{new URL(source).hostname}</a>
-          </p>
-        )
-      }
+      {source && (
+        <p class="source" data-pagefind-ignore>
+          Source: <a href={source}>{new URL(source).hostname}</a>
+        </p>
+      )}
     </article>
 
     <aside class="entry-aside" data-pagefind-ignore>
@@ -121,7 +135,9 @@ const jsonLd = {
 <script>
   import mediumZoom from 'medium-zoom';
   // Click-to-zoom for content images (skip linked images and diagrams).
-  const zoomable = [...document.querySelectorAll<HTMLImageElement>('.prose img')].filter((img) => !img.closest('a, .diagram, .no-zoom'));
+  const zoomable = [...document.querySelectorAll<HTMLImageElement>('.prose img')].filter(
+    (img) => !img.closest('a, .diagram, .no-zoom'),
+  );
   if (zoomable.length) mediumZoom(zoomable, { margin: 24, background: 'var(--color-bg)' });
 </script>
 

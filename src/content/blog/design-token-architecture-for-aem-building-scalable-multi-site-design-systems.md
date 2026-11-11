@@ -7,6 +7,8 @@ tags:
   - Frontend
 ---
 
+<!-- markdownlint-disable-file MD001 -- TODO: the first section starts at h3; add an intro h2 or promote the h3s, then remove this line. -->
+
 > **“Design is not just what it looks like and feels like. Design is how it works.”**
 — Steve Jobs
 

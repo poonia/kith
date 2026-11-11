@@ -9,7 +9,14 @@ const posts = (await getPublished('blog')).slice(0, 5);
 const snippets = (await getPublished('snippets')).slice(0, 5);
 
 const jsonLd = [
-  { '@type': 'WebSite', name: SITE.title, url: absolute('/', Astro.site), description: SITE.description, inLanguage: 'en', author: personLd(Astro.site) },
+  {
+    '@type': 'WebSite',
+    name: SITE.title,
+    url: absolute('/', Astro.site),
+    description: SITE.description,
+    inLanguage: 'en',
+    author: personLd(Astro.site),
+  },
   personLd(Astro.site),
 ];
 ---

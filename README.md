@@ -8,19 +8,21 @@ Personal blog built with [Astro](https://astro.build), content managed with [Git
 
 ## Commands
 
-| Command           | What it does                                       |
-| ----------------- | -------------------------------------------------- |
-| `npm install`     | Install dependencies                               |
-| `npm run dev`     | Dev server at http://localhost:4321 (shows drafts) |
-| `npm run build`   | Type-check, build to `dist/` (no drafts), index search |
-| `npm run preview` | Serve the production build locally (search works here) |
+| Command           | What it does                                               |
+| ----------------- | ---------------------------------------------------------- |
+| `npm install`     | Install dependencies                                       |
+| `npm run dev`     | Dev server at http://localhost:4321 (shows drafts)         |
+| `npm run build`   | Type-check, build to `dist/` (no drafts), index search     |
+| `npm run preview` | Serve the production build locally (search works here)     |
+| `npm run lint`    | Prettier check, content lint (markdownlint), `astro check` |
+| `npm run format`  | Format code with Prettier                                  |
 
 ## Content
 
-| Collection | Folder                  | Notes                         |
-| ---------- | ----------------------- | ----------------------------- |
-| Blog       | `src/content/blog/`     | Long-form articles            |
-| Snippets   | `src/content/snippets/` | Short notes, TILs, code       |
+| Collection | Folder                  | Notes                                     |
+| ---------- | ----------------------- | ----------------------------------------- |
+| Blog       | `src/content/blog/`     | Long-form articles                        |
+| Snippets   | `src/content/snippets/` | Short notes, TILs, code                   |
 | Pages      | `src/content/pages/`    | About, Now, Uses — `about.md` → `/about/` |
 
 - Files starting with `_` are ignored.
@@ -33,21 +35,21 @@ Personal blog built with [Astro](https://astro.build), content managed with [Git
 
 Everything is plain Markdown, so it works in the GitCMS editor. See `src/content/blog/kitchen-sink.md` for live examples.
 
-| Element | Syntax |
-| --- | --- |
-| Code with title | ` ```js title="src/app.js" ` |
-| Highlight lines / words | ` ```js {2,4-5} "word" ` |
-| Inserted / deleted lines | ` ```ts ins={3} del={2} ` or ` ```diff lang="css" ` |
-| Line numbers | ` ```js showLineNumbers ` |
-| Collapse boilerplate | ` ```html collapse={1-4} ` |
-| Terminal | ` ```bash ` / ` ```sh ` (terminal frame is automatic; omit `$` prompts) |
-| Command output | ` ```text title="Output" ` |
-| Diagram | ` ```mermaid title="Caption" ` — rendered to SVG at build time. Prefer `flowchart TD` for flows with more than ~4 steps; wide diagrams shrink to 75% and then scroll. |
-| File tree | ` ```tree title="Caption" ` — 2-space indent or pasted `tree` output; trailing `/` = folder, `# comment`, `**highlight**`, `...` |
-| Callout | `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`; add a custom title after the marker; `[!NOTE]-` starts collapsed |
-| Image with caption | `![Alt text](/images/x.png "Caption")` (click-to-zoom is automatic) |
-| Maths | `$inline$` and `$$ block $$` (KaTeX CSS loads only on pages that use it) |
-| Icons in components | `<Icon name="folder" />` — any [Lucide](https://lucide.dev/icons) name; also usable in Mermaid as `lucide:name` |
+| Element                  | Syntax                                                                                                                                                                |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Code with title          | ` ```js title="src/app.js" `                                                                                                                                          |
+| Highlight lines / words  | ` ```js {2,4-5} "word" `                                                                                                                                              |
+| Inserted / deleted lines | ` ```ts ins={3} del={2} ` or ` ```diff lang="css" `                                                                                                                   |
+| Line numbers             | ` ```js showLineNumbers `                                                                                                                                             |
+| Collapse boilerplate     | ` ```html collapse={1-4} `                                                                                                                                            |
+| Terminal                 | ` ```bash ` / ` ```sh ` (terminal frame is automatic; omit `$` prompts)                                                                                               |
+| Command output           | ` ```text title="Output" `                                                                                                                                            |
+| Diagram                  | ` ```mermaid title="Caption" ` — rendered to SVG at build time. Prefer `flowchart TD` for flows with more than ~4 steps; wide diagrams shrink to 75% and then scroll. |
+| File tree                | ` ```tree title="Caption" ` — 2-space indent or pasted `tree` output; trailing `/` = folder, `# comment`, `**highlight**`, `...`                                      |
+| Callout                  | `> [!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]`, `[!CAUTION]`; add a custom title after the marker; `[!NOTE]-` starts collapsed                                   |
+| Image with caption       | `![Alt text](/images/x.png "Caption")` (click-to-zoom is automatic)                                                                                                   |
+| Maths                    | `$inline$` and `$$ block $$` (KaTeX CSS loads only on pages that use it)                                                                                              |
+| Icons in components      | `<Icon name="folder" />` — any [Lucide](https://lucide.dev/icons) name; also usable in Mermaid as `lucide:name`                                                       |
 
 Mermaid needs Chromium at build time: `npx playwright install chromium` (once locally; CI does it in the workflow). Rendered diagrams are cached in `node_modules/.cache/kith-mermaid`.
 
@@ -62,7 +64,7 @@ If a Markdown plugin changes, clear Astro's content cache: `rm -rf .astro node_m
   1. Enable Discussions on the repo and create a `Comments` category (Announcement type).
   2. Install the [giscus app](https://github.com/apps/giscus) on the repo.
   3. Copy `repoId` and `categoryId` from giscus.app into `GISCUS` in `src/consts.ts`.
-  Per post, `comments: false` turns them off.
+     Per post, `comments: false` turns them off.
 
 ## SEO and feeds
 
@@ -84,10 +86,52 @@ Upload through GitCMS (or drop files into `src/assets/images/`) and reference th
 
 A remark plugin (`src/plugins/remark-image-paths.mjs`) maps `/images/…` to `src/assets/images/…` so Astro optimises every image (AVIF/WebP, responsive sizes, no layout shift). `heroImage` in frontmatter uses the same path format.
 
+## Deployment
+
+### Workflows
+
+| Workflow                       | Runs on                                           | Does                                                                                                                             |
+| ------------------------------ | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `.github/workflows/deploy.yml` | push to `main`, daily 05:00 UTC, manual           | Build and deploy to GitHub Pages. The daily run publishes posts whose `pubDate` has arrived.                                     |
+| `.github/workflows/ci.yml`     | every PR (including GitCMS editorial PRs), weekly | Prettier, markdownlint, build, internal link check (weekly: external links too), Lighthouse budgets, optional Cloudflare preview |
+
+Lighthouse budgets (`lighthouserc.json`): accessibility ≥ 0.95, SEO ≥ 0.95, best practices ≥ 0.9 fail the PR; performance < 0.9 warns.
+
+### One-time setup
+
+1. **Repository** — must be public for GitHub Pages on a free plan (or use GitHub Pro/Team).
+2. **Pages source** — _Settings → Pages → Build and deployment → Source: GitHub Actions_.
+3. **Custom domain** — _Settings → Pages → Custom domain_: `kith.dev` (also in `public/CNAME`).
+4. **Verify the domain** — _your account Settings → Pages → Add a domain_ (adds a TXT record), so nobody else can claim `kith.dev` on GitHub Pages.
+5. **DNS at your registrar**:
+
+   | Type  | Name  | Value                 |
+   | ----- | ----- | --------------------- |
+   | A     | `@`   | `185.199.108.153`     |
+   | A     | `@`   | `185.199.109.153`     |
+   | A     | `@`   | `185.199.110.153`     |
+   | A     | `@`   | `185.199.111.153`     |
+   | AAAA  | `@`   | `2606:50c0:8000::153` |
+   | AAAA  | `@`   | `2606:50c0:8001::153` |
+   | AAAA  | `@`   | `2606:50c0:8002::153` |
+   | AAAA  | `@`   | `2606:50c0:8003::153` |
+   | CNAME | `www` | `poonia.github.io`    |
+
+   Remove any other A/AAAA/ALIAS records on `@` (e.g. registrar parking).
+
+6. **HTTPS** — `.dev` is HSTS-preloaded, so the site won't load over HTTP at all. Wait for GitHub to issue the certificate (minutes to a few hours after DNS resolves), then tick _Enforce HTTPS_.
+
+### Optional services
+
+- **PR previews (Cloudflare Pages)** — create a Pages project named `kith` (_Workers & Pages → Create → Pages → Direct upload_), then in GitHub _Settings → Secrets and variables → Actions_ add secret `CLOUDFLARE_API_TOKEN` (token with _Cloudflare Pages: Edit_) and variable `CLOUDFLARE_ACCOUNT_ID` (and `CLOUDFLARE_PAGES_PROJECT` if the name differs). PRs then get a "View deployment" link. Production stays on GitHub Pages.
+- **Analytics (Cloudflare Web Analytics)** — cookie-free, no consent banner. Add the site in Cloudflare → _Web Analytics_ (manual JS snippet) and paste the token into `CF_ANALYTICS_TOKEN` in `src/consts.ts`. Loaded on production builds only.
+- **Comments (giscus)** — see _Reader features_ above.
+
 ## Project structure
 
 ```text
 .gitcms/                GitCMS config (collections, media)
+.github/workflows/      Deploy and CI workflows
 public/                 Static files copied as-is (favicon, CNAME)
 src/
   assets/images/        Images managed by GitCMS

@@ -41,8 +41,16 @@ export default defineConfig({
       provider: fontProviders.local(),
       options: {
         variants: [
-          { src: ['@fontsource-variable/inter/files/inter-latin-wght-normal.woff2'], weight: '100 900', style: 'normal' },
-          { src: ['@fontsource-variable/inter/files/inter-latin-wght-italic.woff2'], weight: '100 900', style: 'italic' },
+          {
+            src: ['@fontsource-variable/inter/files/inter-latin-wght-normal.woff2'],
+            weight: '100 900',
+            style: 'normal',
+          },
+          {
+            src: ['@fontsource-variable/inter/files/inter-latin-wght-italic.woff2'],
+            weight: '100 900',
+            style: 'italic',
+          },
         ],
       },
       fallbacks: ['system-ui', 'sans-serif'],
@@ -53,7 +61,11 @@ export default defineConfig({
       provider: fontProviders.local(),
       options: {
         variants: [
-          { src: ['@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2'], weight: '100 800', style: 'normal' },
+          {
+            src: ['@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2'],
+            weight: '100 800',
+            style: 'normal',
+          },
         ],
       },
       fallbacks: ['ui-monospace', 'monospace'],

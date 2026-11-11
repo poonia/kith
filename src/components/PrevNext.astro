@@ -8,26 +8,24 @@ interface Props {
 const { newer, older } = Astro.props;
 ---
 
-{
-  (newer || older) && (
-    <nav class="prev-next" aria-label="More posts">
-      {older ? (
-        <a class="older" href={entryHref(older)} rel="prev">
-          <span class="label">← Older</span>
-          <span class="title">{older.data.title}</span>
-        </a>
-      ) : (
-        <span />
-      )}
-      {newer && (
-        <a class="newer" href={entryHref(newer)} rel="next">
-          <span class="label">Newer →</span>
-          <span class="title">{newer.data.title}</span>
-        </a>
-      )}
-    </nav>
-  )
-}
+{(newer || older) && (
+  <nav class="prev-next" aria-label="More posts">
+    {older ? (
+      <a class="older" href={entryHref(older)} rel="prev">
+        <span class="label">← Older</span>
+        <span class="title">{older.data.title}</span>
+      </a>
+    ) : (
+      <span />
+    )}
+    {newer && (
+      <a class="newer" href={entryHref(newer)} rel="next">
+        <span class="label">Newer →</span>
+        <span class="title">{newer.data.title}</span>
+      </a>
+    )}
+  </nav>
+)}
 
 <style>
   .prev-next {

@@ -15,7 +15,12 @@ export function rehypeHeadingAnchors() {
     const walk = (node) => {
       if (!Array.isArray(node.children)) return;
       node.children = node.children.flatMap((child) => {
-        if (child.type === 'element' && LEVELS.has(child.tagName) && child.properties?.id && child.properties.id !== 'footnote-label') {
+        if (
+          child.type === 'element' &&
+          LEVELS.has(child.tagName) &&
+          child.properties?.id &&
+          child.properties.id !== 'footnote-label'
+        ) {
           const id = String(child.properties.id);
           const label = textOf(child).trim();
           return [
@@ -31,7 +36,12 @@ export function rehypeHeadingAnchors() {
                   properties: { className: ['heading-anchor'], href: `#${id}`, dataPagefindIgnore: '' },
                   children: [
                     { type: 'raw', value: ICON },
-                    { type: 'element', tagName: 'span', properties: { className: ['sr-only'] }, children: [{ type: 'text', value: `Section titled “${label}”` }] },
+                    {
+                      type: 'element',
+                      tagName: 'span',
+                      properties: { className: ['sr-only'] },
+                      children: [{ type: 'text', value: `Section titled “${label}”` }],
+                    },
                   ],
                 },
               ],

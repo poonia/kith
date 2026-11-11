@@ -8,9 +8,8 @@ const tags = await getTags();
 <BaseLayout title="Tags" description="Browse posts and snippets by topic.">
   <div class="container listing">
     <div class="measure">
-    <h1>Tags</h1>
-    {
-      tags.length === 0 ? (
+      <h1>Tags</h1>
+      {tags.length === 0 ? (
         <p class="muted">No tags yet.</p>
       ) : (
         <ul class="tag-cloud">
@@ -22,8 +21,7 @@ const tags = await getTags();
             </li>
           ))}
         </ul>
-      )
-    }
+      )}
     </div>
   </div>
 </BaseLayout>

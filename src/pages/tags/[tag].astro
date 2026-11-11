@@ -16,9 +16,13 @@ const count = tag.entries.length;
 <BaseLayout title={`#${tag.name}`} description={`${count} ${count === 1 ? 'entry' : 'entries'} tagged ${tag.name}.`}>
   <div class="container listing">
     <header class="measure">
-      <p class="crumb"><a href="/tags/">All tags</a></p>
+      <p class="crumb">
+        <a href="/tags/">All tags</a>
+      </p>
       <h1>#{tag.name}</h1>
-      <p class="muted">{count} {count === 1 ? 'entry' : 'entries'}</p>
+      <p class="muted">
+        {count} {count === 1 ? 'entry' : 'entries'}
+      </p>
     </header>
     <div class="measure">
       <EntryList entries={tag.entries} showType />

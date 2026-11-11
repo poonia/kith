@@ -18,7 +18,11 @@ const CACHE_DIR = path.resolve('node_modules/.cache/kith-mermaid');
 const RENDER_VERSION = '3';
 
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-const titleFrom = (meta) => meta?.match(/title=(?:"([^"]*)"|'([^']*)')/)?.slice(1).find(Boolean);
+const titleFrom = (meta) =>
+  meta
+    ?.match(/title=(?:"([^"]*)"|'([^']*)')/)
+    ?.slice(1)
+    .find(Boolean);
 
 // Render with the same font the site uses so label boxes are measured correctly.
 const interFile = pathToFileURL(require.resolve('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')).href;
@@ -30,8 +34,41 @@ const base = {
   sequence: { mirrorActors: false },
 };
 const THEMES = {
-  light: { ...base, theme: 'base', themeVariables: { fontFamily: base.fontFamily, fontSize: '15px', primaryColor: '#f5f5f3', primaryBorderColor: '#9a9a94', primaryTextColor: '#1c1c1a', lineColor: '#5e5e59', secondaryColor: '#ebebe8', tertiaryColor: '#fcfcfb', noteBkgColor: '#fdf6dc', noteBorderColor: '#d8c27a' } },
-  dark: { ...base, theme: 'base', themeVariables: { darkMode: true, fontFamily: base.fontFamily, fontSize: '15px', background: '#0e0f11', primaryColor: '#1d2024', primaryBorderColor: '#6b7078', primaryTextColor: '#eceef1', lineColor: '#a3a8b0', secondaryColor: '#2a2e33', tertiaryColor: '#15171a', noteBkgColor: '#2e2a1a', noteBorderColor: '#7a6a35', noteTextColor: '#eceef1' } },
+  light: {
+    ...base,
+    theme: 'base',
+    themeVariables: {
+      fontFamily: base.fontFamily,
+      fontSize: '15px',
+      primaryColor: '#f5f5f3',
+      primaryBorderColor: '#9a9a94',
+      primaryTextColor: '#1c1c1a',
+      lineColor: '#5e5e59',
+      secondaryColor: '#ebebe8',
+      tertiaryColor: '#fcfcfb',
+      noteBkgColor: '#fdf6dc',
+      noteBorderColor: '#d8c27a',
+    },
+  },
+  dark: {
+    ...base,
+    theme: 'base',
+    themeVariables: {
+      darkMode: true,
+      fontFamily: base.fontFamily,
+      fontSize: '15px',
+      background: '#0e0f11',
+      primaryColor: '#1d2024',
+      primaryBorderColor: '#6b7078',
+      primaryTextColor: '#eceef1',
+      lineColor: '#a3a8b0',
+      secondaryColor: '#2a2e33',
+      tertiaryColor: '#15171a',
+      noteBkgColor: '#2e2a1a',
+      noteBorderColor: '#7a6a35',
+      noteTextColor: '#eceef1',
+    },
+  },
 };
 
 /** @type {import('mermaid-isomorphic').MermaidRenderer | undefined} */
@@ -53,7 +90,10 @@ function sizeSvg(svg, width, height) {
 }
 
 async function renderDiagram(source) {
-  const key = createHash('sha256').update(RENDER_VERSION + JSON.stringify(THEMES) + source).digest('hex').slice(0, 16);
+  const key = createHash('sha256')
+    .update(RENDER_VERSION + JSON.stringify(THEMES) + source)
+    .digest('hex')
+    .slice(0, 16);
   const cacheFile = path.join(CACHE_DIR, `${key}.json`);
   try {
     return JSON.parse(await readFile(cacheFile, 'utf8'));
@@ -97,7 +137,9 @@ export function remarkMermaid() {
         rendered = await renderDiagram(node.value);
       } catch (error) {
         const where = `${path.relative(process.cwd(), file.path ?? 'unknown')}:${node.position?.start.line ?? '?'}`;
-        throw new Error(`Mermaid diagram failed to render (${where}): ${error instanceof Error ? error.message : error}`);
+        throw new Error(
+          `Mermaid diagram failed to render (${where}): ${error instanceof Error ? error.message : error}`,
+        );
       }
       const title = titleFrom(node.meta);
       const label = title ?? rendered.light.title ?? rendered.light.description ?? 'Diagram';
