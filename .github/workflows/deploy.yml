@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
@@ -39,6 +39,8 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
 
       # Mermaid diagrams are rendered at build time in headless Chromium.
+      # Runners are pinned to ubuntu-24.04: Playwright's --with-deps failed on the
+      # ubuntu-latest → Ubuntu 26 image (Oct 2026). Revisit when Playwright supports it.
       - run: npx playwright install --with-deps chromium
 
       - name: Cache rendered Mermaid diagrams
@@ -59,7 +61,7 @@ jobs:
 
   deploy:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
