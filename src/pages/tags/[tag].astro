@@ -1,0 +1,52 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EntryList from '@/components/EntryList.astro';
+import { getTags } from '@/lib/tags';
+
+export const getStaticPaths = (async () => {
+  const tags = await getTags();
+  return tags.map((t) => ({ params: { tag: t.slug }, props: { tag: t } }));
+}) satisfies GetStaticPaths;
+
+const { tag } = Astro.props;
+const count = tag.entries.length;
+---
+
+<BaseLayout title={`#${tag.name}`} description={`${count} ${count === 1 ? 'entry' : 'entries'} tagged ${tag.name}.`}>
+  <div class="container listing">
+    <header class="measure">
+      <p class="crumb">
+        <a href="/tags/">All tags</a>
+      </p>
+      <h1>#{tag.name}</h1>
+      <p class="muted">
+        {count} {count === 1 ? 'entry' : 'entries'}
+      </p>
+    </header>
+    <div class="measure">
+      <EntryList entries={tag.entries} showType />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .listing {
+    padding-block: var(--space-12);
+  }
+  header {
+    margin-bottom: var(--space-12);
+  }
+  .crumb {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-sm);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+    letter-spacing: -0.025em;
+  }
+  header .muted {
+    margin: var(--space-2) 0 0;
+  }
+</style>

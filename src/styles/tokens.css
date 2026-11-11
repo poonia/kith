@@ -1,0 +1,103 @@
+/*
+ * Design tokens. Primitives → semantic aliases → components use semantic only.
+ * Theme: follows the OS unless the reader picks one ([data-theme] on <html>).
+ */
+:root {
+  /* Primitives */
+  --gray-0: #fcfcfb;
+  --gray-50: #f5f5f3;
+  --gray-100: #ebebe8;
+  --gray-200: #dcdcd8;
+  --gray-400: #9a9a94;
+  --gray-500: #6e6e69; /* subtle text: ≥4.5:1 on bg and surface */
+  --gray-600: #5e5e59;
+  --gray-800: #2b2b28;
+  --gray-900: #1c1c1a;
+  --ink-0: #0e0f11;
+  --ink-50: #15171a;
+  --ink-100: #1d2024;
+  --ink-200: #2a2e33;
+  --ink-400: #6b7078;
+  --ink-500: #878c94; /* subtle text: ≥4.5:1 on bg and surface */
+  --ink-600: #a3a8b0;
+  --ink-800: #d9dce1;
+  --ink-900: #eceef1;
+  --blue-600: #1f5fbf;
+  --blue-700: #194d9b;
+  --blue-300: #8ab4f8;
+  --blue-200: #aecbfa;
+
+  /* Typography */
+  --font-body: var(--font-sans), system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-code: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: clamp(2rem, 1.6rem + 1.6vw, 2.625rem);
+  --leading-tight: 1.25;
+  --leading-body: 1.7;
+
+  /* Space & layout */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --measure: 68ch;
+  --page-width: 72rem;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /* Semantic — light */
+  color-scheme: light;
+  --color-bg: var(--gray-0);
+  --color-surface: var(--gray-50);
+  --color-surface-strong: var(--gray-100);
+  --color-border: var(--gray-200);
+  --color-text: var(--gray-900);
+  --color-text-muted: var(--gray-600);
+  --color-text-subtle: var(--gray-500);
+  --color-link: var(--blue-600);
+  --color-link-hover: var(--blue-700);
+  --color-focus: var(--blue-600);
+  --color-selection: #cfe0fb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: var(--ink-0);
+    --color-surface: var(--ink-50);
+    --color-surface-strong: var(--ink-100);
+    --color-border: var(--ink-200);
+    --color-text: var(--ink-900);
+    --color-text-muted: var(--ink-600);
+    --color-text-subtle: var(--ink-500);
+    --color-link: var(--blue-300);
+    --color-link-hover: var(--blue-200);
+    --color-focus: var(--blue-300);
+    --color-selection: #23406e;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: var(--ink-0);
+  --color-surface: var(--ink-50);
+  --color-surface-strong: var(--ink-100);
+  --color-border: var(--ink-200);
+  --color-text: var(--ink-900);
+  --color-text-muted: var(--ink-600);
+  --color-text-subtle: var(--ink-500);
+  --color-link: var(--blue-300);
+  --color-link-hover: var(--blue-200);
+  --color-focus: var(--blue-300);
+  --color-selection: #23406e;
+}

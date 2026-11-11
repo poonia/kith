@@ -1,0 +1,28 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import EntryLayout from '@/layouts/EntryLayout.astro';
+import { getPublished } from '@/lib/content';
+
+export const getStaticPaths = (async () => {
+  const entries = await getPublished('snippets'); // newest first
+  return entries.map((entry, i) => ({
+    params: { id: entry.id },
+    props: { entry, newer: entries[i - 1], older: entries[i + 1] },
+  }));
+}) satisfies GetStaticPaths;
+
+const { entry, newer, older } = Astro.props;
+const { Content, headings, remarkPluginFrontmatter: fm } = await render(entry);
+---
+
+<EntryLayout
+  entry={entry}
+  headings={headings}
+  readingTime={undefined}
+  hasMath={Boolean(fm.hasMath)}
+  newer={newer}
+  older={older}
+>
+  <Content />
+</EntryLayout>

@@ -1,33 +1,35 @@
 {
   "label": "Snippets",
+  "description": "Short notes, TILs and reusable code.",
   "git_path": "/src/content/snippets/",
-  "file_extension": ".mdx",
+  "file_extension": ".md",
   "filename_pattern": "",
   "collection_type": "flat",
   "frontmatter_schema": [
-    {
-      "name": "title",
-      "type": "title",
-      "label": "Title",
-      "required": false
-    },
+    { "name": "title", "type": "title", "label": "Title", "required": true, "maxLength": 120 },
     {
       "name": "description",
-      "type": "richtext",
-      "label": "Description",
-      "required": false
-    },
-    {
-      "name": "image",
-      "type": "image",
-      "label": "Image",
-      "required": false
-    },
-    {
-      "name": "source",
       "type": "text",
-      "label": "Source",
-      "required": false
-    }
+      "label": "Description",
+      "description": "Plain-text summary (max 160 characters).",
+      "required": true,
+      "maxLength": 160
+    },
+    { "name": "pubDate", "type": "datetime", "label": "Publish date", "required": true, "withTime": true },
+    {
+      "name": "tags",
+      "type": "multiselect",
+      "label": "Tags",
+      "options": ["AEM", "Frontend", "CSS", "JavaScript", "Shell", "Git"],
+      "color": "green"
+    },
+    {
+      "name": "language",
+      "type": "select",
+      "label": "Primary language",
+      "options": ["bash", "css", "html", "javascript", "typescript", "json", "yaml", "java", "python", "other"]
+    },
+    { "name": "source", "type": "url", "label": "Source URL" },
+    { "name": "draft", "type": "boolean", "label": "Draft", "default": false }
   ]
 }

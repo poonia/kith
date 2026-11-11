@@ -1,0 +1,80 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import TagList from './TagList.astro';
+import { entryHref, type AnyEntry } from '@/lib/tags';
+
+interface Props {
+  entries: AnyEntry[];
+  /** Show a "Snippet" label (useful on mixed lists like tag pages). */
+  showType?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { entries, showType = false, headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+---
+
+{entries.length === 0 ? (
+  <p class="muted">Nothing published yet.</p>
+) : (
+  <ul class="entries">
+    {entries.map((e) => (
+      <li>
+        <H class="title">
+          <a href={entryHref(e)}>{e.data.title}</a>
+          {e.data.draft && <span class="badge">Draft</span>}
+          {showType && e.collection === 'snippets' && <span class="badge">Snippet</span>}
+        </H>
+        <p class="muted">{e.data.description}</p>
+        <div class="meta">
+          <FormattedDate date={e.data.pubDate} />
+          <TagList tags={e.data.tags} />
+        </div>
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-8);
+  }
+  .title {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    letter-spacing: -0.01em;
+  }
+  .title a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .title a:hover {
+    color: var(--color-link);
+    text-decoration: underline;
+  }
+  p {
+    margin: var(--space-1) 0;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+  .badge {
+    margin-inline-start: var(--space-2);
+    padding: 0 var(--space-2);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    color: var(--color-text-muted);
+    vertical-align: middle;
+  }
+</style>

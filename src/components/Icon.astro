@@ -1,0 +1,15 @@
+---
+import { iconSvg } from '@/lib/icons.mjs';
+
+interface Props {
+  /** Lucide icon name — browse at https://lucide.dev/icons */
+  name: string;
+  size?: number | string;
+  class?: string;
+  /** Accessible label. Omit for decorative icons (they get aria-hidden). */
+  label?: string;
+}
+const { name, size, class: className, label } = Astro.props;
+---
+
+<Fragment set:html={iconSvg(name, { size, class: ['icon', className].filter(Boolean).join(' '), label })} />

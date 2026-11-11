@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EntryList from '@/components/EntryList.astro';
+import { getPublished } from '@/lib/content';
+
+const entries = await getPublished('snippets');
+---
+
+<BaseLayout title="Snippets" description="Short notes, TILs and reusable code.">
+  <div class="container listing">
+    <header class="measure">
+      <h1>Snippets</h1>
+      <p class="muted">
+        Short notes, TILs and reusable code. Browse by <a href="/tags/">tag</a>.
+      </p>
+    </header>
+    <div class="measure">
+      <EntryList entries={entries} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .listing {
+    padding-block: var(--space-12);
+  }
+  header {
+    margin-bottom: var(--space-12);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+    letter-spacing: -0.025em;
+  }
+  header p {
+    margin: var(--space-2) 0 0;
+  }
+</style>

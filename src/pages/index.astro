@@ -1,0 +1,86 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import EntryList from '@/components/EntryList.astro';
+import { getPublished } from '@/lib/content';
+import { SITE } from '@/consts';
+import { absolute, personLd } from '@/lib/seo';
+
+const posts = (await getPublished('blog')).slice(0, 5);
+const snippets = (await getPublished('snippets')).slice(0, 5);
+
+const jsonLd = [
+  {
+    '@type': 'WebSite',
+    name: SITE.title,
+    url: absolute('/', Astro.site),
+    description: SITE.description,
+    inLanguage: 'en',
+    author: personLd(Astro.site),
+  },
+  personLd(Astro.site),
+];
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <div class="container home">
+    <section class="intro measure">
+      <h1>{SITE.title}</h1>
+      <p class="muted">{SITE.description}</p>
+    </section>
+
+    <section aria-labelledby="latest-posts">
+      <div class="section-head">
+        <h2 id="latest-posts">Latest posts</h2>
+        <a href="/blog/">All posts →</a>
+      </div>
+      <EntryList entries={posts} headingLevel="h3" />
+    </section>
+
+    <section aria-labelledby="latest-snippets">
+      <div class="section-head">
+        <h2 id="latest-snippets">Snippets</h2>
+        <a href="/snippets/">All snippets →</a>
+      </div>
+      <EntryList entries={snippets} headingLevel="h3" />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .home {
+    display: grid;
+    gap: var(--space-16);
+    padding-block: var(--space-16);
+  }
+  .home > section {
+    max-width: var(--measure);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--text-3xl);
+    letter-spacing: -0.025em;
+  }
+  .intro p {
+    margin: var(--space-3) 0 0;
+    font-size: var(--text-lg);
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+  }
+  .section-head a {
+    font-size: var(--text-sm);
+  }
+</style>

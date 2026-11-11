@@ -1,39 +1,43 @@
 {
   "label": "Blog",
+  "description": "Long-form articles.",
   "git_path": "/src/content/blog/",
   "file_extension": ".md",
   "filename_pattern": "",
   "collection_type": "flat",
   "frontmatter_schema": [
-    {
-      "name": "title",
-      "type": "title",
-      "label": "Title",
-      "required": false
-    },
+    { "name": "title", "type": "title", "label": "Title", "required": true, "maxLength": 120 },
     {
       "name": "description",
-      "type": "richtext",
+      "type": "text",
       "label": "Description",
-      "required": false
+      "description": "Plain-text summary used for lists, search engines and social cards (max 160 characters).",
+      "required": true,
+      "maxLength": 160
     },
+    { "name": "pubDate", "type": "datetime", "label": "Publish date", "required": true, "withTime": true },
+    { "name": "updatedDate", "type": "datetime", "label": "Updated date", "withTime": true },
     {
       "name": "tags",
       "type": "multiselect",
       "label": "Tags",
-      "required": false,
-      "options": [
-        "AEM"
-      ],
-      "allowCustom": true,
+      "options": ["AEM", "Frontend", "CSS", "JavaScript", "Design Systems", "Tooling"],
       "color": "blue"
     },
+    { "name": "heroImage", "type": "image", "label": "Hero image" },
     {
-      "name": "pubDate",
-      "type": "datetime",
-      "label": "Pub Date",
-      "required": false,
-      "withTime": true
-    }
+      "name": "heroAlt",
+      "type": "text",
+      "label": "Hero image alt text",
+      "description": "Required when a hero image is set."
+    },
+    { "name": "draft", "type": "boolean", "label": "Draft", "default": false },
+    {
+      "name": "canonical",
+      "type": "url",
+      "label": "Canonical URL",
+      "description": "Only for posts first published elsewhere."
+    },
+    { "name": "comments", "type": "boolean", "label": "Allow comments", "default": true }
   ]
 }

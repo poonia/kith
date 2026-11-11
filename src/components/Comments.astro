@@ -1,0 +1,84 @@
+---
+import { GISCUS } from '@/consts';
+
+const enabled = Boolean(GISCUS.repoId && GISCUS.categoryId);
+---
+
+{enabled && (
+  <section class="comments" aria-labelledby="comments-heading" data-pagefind-ignore>
+    <h2 id="comments-heading">Comments</h2>
+    <div
+      class="giscus-mount"
+      data-repo={GISCUS.repo}
+      data-repo-id={GISCUS.repoId}
+      data-category={GISCUS.category}
+      data-category-id={GISCUS.categoryId}
+    />
+    <noscript>Comments need JavaScript (they're powered by GitHub Discussions).</noscript>
+  </section>
+)}
+
+<script>
+  // Load giscus only when the comments come into view, and keep its theme in
+  // sync with the site theme toggle.
+  const mount = document.querySelector<HTMLElement>('.giscus-mount');
+  const isDark = () => {
+    const t = document.documentElement.dataset.theme;
+    return t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  };
+  const theme = () => (isDark() ? 'dark' : 'light');
+
+  if (mount) {
+    const load = () => {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const d = mount.dataset;
+      Object.entries({
+        'data-repo': d.repo!,
+        'data-repo-id': d.repoId!,
+        'data-category': d.category!,
+        'data-category-id': d.categoryId!,
+        'data-mapping': 'pathname',
+        'data-strict': '1',
+        'data-reactions-enabled': '1',
+        'data-emit-metadata': '0',
+        'data-input-position': 'top',
+        'data-theme': theme(),
+        'data-lang': 'en',
+        'data-loading': 'lazy',
+      }).forEach(([k, v]) => s.setAttribute(k, v));
+      mount.append(s);
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          load();
+        }
+      },
+      { rootMargin: '400px' },
+    );
+    io.observe(mount);
+
+    document.addEventListener('themechange', () => {
+      document
+        .querySelector<HTMLIFrameElement>('iframe.giscus-frame')
+        ?.contentWindow?.postMessage({ giscus: { setConfig: { theme: theme() } } }, 'https://giscus.app');
+    });
+  }
+</script>
+
+<style>
+  .comments {
+    max-width: var(--measure);
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  h2 {
+    margin: 0 0 var(--space-6);
+    font-size: var(--text-lg);
+  }
+</style>
