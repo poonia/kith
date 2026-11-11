@@ -1,0 +1,21 @@
+{
+  "label": "Pages",
+  "description": "Standalone pages such as About, Now and Uses. The file name is the URL (about.md → /about/).",
+  "git_path": "/src/content/pages/",
+  "file_extension": ".md",
+  "filename_pattern": "",
+  "collection_type": "flat",
+  "frontmatter_schema": [
+    { "name": "title", "type": "title", "label": "Title", "required": true, "maxLength": 120 },
+    {
+      "name": "description",
+      "type": "text",
+      "label": "Description",
+      "description": "Plain-text summary for search engines and social cards (max 160 characters).",
+      "required": true,
+      "maxLength": 160
+    },
+    { "name": "updatedDate", "type": "datetime", "label": "Last updated" },
+    { "name": "draft", "type": "boolean", "label": "Draft", "default": false }
+  ]
+}

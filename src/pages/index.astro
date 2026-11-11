@@ -20,7 +20,7 @@ const snippets = (await getPublished('snippets')).slice(0, 5);
         <h2 id="latest-posts">Latest posts</h2>
         <a href="/blog/">All posts →</a>
       </div>
-      <EntryList entries={posts} base="/blog/" />
+      <EntryList entries={posts} headingLevel="h3" />
     </section>
 
     <section aria-labelledby="latest-snippets">
@@ -28,7 +28,7 @@ const snippets = (await getPublished('snippets')).slice(0, 5);
         <h2 id="latest-snippets">Snippets</h2>
         <a href="/snippets/">All snippets →</a>
       </div>
-      <EntryList entries={snippets} base="/snippets/" />
+      <EntryList entries={snippets} headingLevel="h3" />
     </section>
   </div>
 </BaseLayout>

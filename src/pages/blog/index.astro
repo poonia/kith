@@ -3,16 +3,25 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import EntryList from '@/components/EntryList.astro';
 import { getPublished } from '@/lib/content';
 
-const entries = await getPublished('blog');
+const posts = await getPublished('blog');
+const byYear = Map.groupBy(posts, (p) => p.data.pubDate.getUTCFullYear());
 ---
 
 <BaseLayout title="Blog" description="Long-form articles on frontend architecture, design systems and AEM.">
   <div class="container listing">
     <header class="measure">
       <h1>Blog</h1>
-      <p class="muted">Long-form articles on frontend architecture, design systems and AEM.</p>
+      <p class="muted">Long-form articles on frontend architecture, design systems and AEM. Browse by <a href="/tags/">tag</a>.</p>
     </header>
-    <EntryList entries={entries} base="/blog/" />
+    {posts.length === 0 && <EntryList entries={[]} />}
+    {
+      [...byYear].map(([year, entries]) => (
+        <section class="year" aria-labelledby={`y-${year}`}>
+          <h2 id={`y-${year}`}>{year}</h2>
+          <EntryList entries={entries} headingLevel="h3" />
+        </section>
+      ))
+    }
   </div>
 </BaseLayout>
 
@@ -31,7 +40,19 @@ const entries = await getPublished('blog');
   header p {
     margin: var(--space-2) 0 0;
   }
-  .listing :global(.entries) {
+  .year {
     max-width: var(--measure);
+  }
+  .year + .year {
+    margin-top: var(--space-12);
+  }
+  .year h2 {
+    margin: 0 0 var(--space-6);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
   }
 </style>

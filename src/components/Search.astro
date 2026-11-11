@@ -1,0 +1,203 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button class="search-trigger" type="button" data-search-open aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K">
+  <Icon name="search" size={16} />
+  <span class="label">Search</span>
+  <kbd class="shortcut" aria-hidden="true">⌘K</kbd>
+</button>
+
+<dialog class="search-dialog" aria-label="Search the site">
+  <div class="search-panel">
+    <div class="search-head">
+      <span class="search-title">Search</span>
+      <button type="button" class="search-close" data-search-close aria-label="Close search">
+        <Icon name="x" size={18} />
+      </button>
+    </div>
+    <div id="pagefind-search" class="search-body"></div>
+  </div>
+</dialog>
+
+<script>
+  // Pagefind's index is generated after `astro build`, so search works on
+  // the production site and `npm run preview`, not in `npm run dev`.
+  type PagefindUICtor = new (opts: Record<string, unknown>) => unknown;
+  declare global {
+    interface Window {
+      PagefindUI?: PagefindUICtor;
+    }
+  }
+
+  const dialog = document.querySelector<HTMLDialogElement>('.search-dialog')!;
+  const mount = document.getElementById('pagefind-search')!;
+  let loaded: Promise<void> | null = null;
+
+  const loadAsset = (tag: 'script' | 'link', url: string) =>
+    new Promise<void>((resolve, reject) => {
+      const el = document.createElement(tag);
+      if (el instanceof HTMLScriptElement) el.src = url;
+      else {
+        el.rel = 'stylesheet';
+        (el as HTMLLinkElement).href = url;
+      }
+      el.onload = () => resolve();
+      el.onerror = () => reject(new Error(`Failed to load ${url}`));
+      document.head.append(el);
+    });
+
+  const loadPagefind = () =>
+    (loaded ??= Promise.all([loadAsset('link', '/pagefind/pagefind-ui.css'), loadAsset('script', '/pagefind/pagefind-ui.js')])
+      .then(() => {
+        new window.PagefindUI!({
+          element: mount,
+          showSubResults: true,
+          showImages: false,
+          resetStyles: false,
+          translations: { placeholder: 'Search posts and snippets' },
+        });
+      })
+      .catch(() => {
+        mount.innerHTML = '<p class="search-unavailable">Search is available on the built site (<code>npm run build &amp;&amp; npm run preview</code>).</p>';
+      }));
+
+  const open = async () => {
+    if (dialog.open) return;
+    dialog.showModal();
+    await loadPagefind();
+    mount.querySelector<HTMLInputElement>('input')?.focus();
+  };
+
+  document.querySelectorAll('[data-search-open]').forEach((b) => b.addEventListener('click', open));
+  dialog.querySelector('[data-search-close]')?.addEventListener('click', () => dialog.close());
+  // Close when clicking the backdrop.
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+  window.addEventListener('keydown', (e) => {
+    const target = e.target as HTMLElement;
+    const typing = target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+    if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) {
+      e.preventDefault();
+      open();
+    }
+  });
+
+  // Show the right shortcut hint.
+  if (!/Mac|iPhone|iPad/.test(navigator.platform)) {
+    document.querySelectorAll('.search-trigger .shortcut').forEach((k) => (k.textContent = 'Ctrl K'));
+  }
+</script>
+
+<style>
+  .search-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    height: 2.25rem;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text-muted);
+    font: inherit;
+    font-size: var(--text-sm);
+    cursor: pointer;
+  }
+  .search-trigger:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-subtle);
+  }
+  .shortcut {
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    color: var(--color-text-subtle);
+  }
+  @media (max-width: 40rem) {
+    .search-trigger {
+      width: 2.25rem;
+      padding: 0;
+      justify-content: center;
+      border-color: transparent;
+      background: transparent;
+    }
+    .search-trigger .label,
+    .search-trigger .shortcut {
+      display: none;
+    }
+  }
+
+  .search-dialog {
+    width: min(42rem, calc(100vw - 2rem));
+    max-height: min(40rem, calc(100dvh - 4rem));
+    margin: 4rem auto auto;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.25);
+  }
+  .search-dialog::backdrop {
+    background: rgb(0 0 0 / 0.4);
+    backdrop-filter: blur(2px);
+  }
+  .search-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: inherit;
+  }
+  .search-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .search-title {
+    font-weight: 600;
+    font-size: var(--text-sm);
+  }
+  .search-close {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--color-text-muted);
+    cursor: pointer;
+  }
+  .search-close:hover {
+    background: var(--color-surface-strong);
+    color: var(--color-text);
+  }
+  .search-body {
+    padding: var(--space-4);
+    overflow-y: auto;
+  }
+  .search-body :global(.search-unavailable) {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  /* Pagefind UI theming via its CSS variables */
+  .search-body {
+    --pagefind-ui-scale: 0.85;
+    --pagefind-ui-primary: var(--color-link);
+    --pagefind-ui-text: var(--color-text);
+    --pagefind-ui-background: var(--color-bg);
+    --pagefind-ui-border: var(--color-border);
+    --pagefind-ui-tag: var(--color-surface-strong);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: var(--font-body);
+  }
+  .search-body :global(mark) {
+    background: var(--color-selection);
+    color: inherit;
+  }
+</style>

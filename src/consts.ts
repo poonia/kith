@@ -4,9 +4,24 @@ export const SITE = {
   author: 'Praveen Poonia',
   lang: 'en',
   locale: 'en-US',
+  github: 'https://github.com/poonia',
 } as const;
 
+/** Main navigation. Entries from the `pages` collection are only shown once published. */
 export const NAV = [
   { href: '/blog/', label: 'Blog' },
   { href: '/snippets/', label: 'Snippets' },
+  { href: '/about/', label: 'About', page: 'about' },
 ] as const;
+
+/**
+ * Comments via giscus (GitHub Discussions). Comments stay hidden until both ids are set.
+ * Setup: enable Discussions on the repo, install https://github.com/apps/giscus,
+ * then copy the ids from https://giscus.app.
+ */
+export const GISCUS = {
+  repo: 'poonia/kith',
+  repoId: '',
+  category: 'Comments',
+  categoryId: '',
+} as const;

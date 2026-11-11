@@ -1,0 +1,157 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+  /** "sidebar" = sticky desktop column, "inline" = collapsible block for small screens */
+  variant: 'sidebar' | 'inline';
+}
+
+const { headings, variant } = Astro.props;
+const items = headings.filter((h) => h.depth >= 2 && h.depth <= 3 && h.slug !== 'footnote-label');
+---
+
+{
+  items.length >= 2 && (
+    <Fragment>
+      {variant === 'sidebar' ? (
+        <nav class="toc toc-sidebar" aria-labelledby="toc-heading">
+          <h2 id="toc-heading">On this page</h2>
+          <ul>
+            {items.map((h) => (
+              <li class={`depth-${h.depth}`}>
+                <a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ) : (
+        <details class="toc toc-inline">
+          <summary>On this page</summary>
+          <nav aria-label="On this page">
+            <ul>
+              {items.map((h) => (
+                <li class={`depth-${h.depth}`}>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </details>
+      )}
+    </Fragment>
+  )
+}
+
+<script>
+  // Highlight the section currently being read in the sidebar TOC.
+  const links = new Map<string, HTMLAnchorElement[]>();
+  document.querySelectorAll<HTMLAnchorElement>('.toc-sidebar [data-toc-link]').forEach((a) => {
+    const id = a.dataset.tocLink!;
+    links.set(id, [...(links.get(id) ?? []), a]);
+  });
+  const targets = [...links.keys()].map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+
+  if (targets.length) {
+    const setActive = (id: string) => {
+      links.forEach((as, key) => as.forEach((a) => (key === id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'))));
+    };
+    const update = () => {
+      const offset = window.innerHeight * 0.25;
+      let current = targets[0].id;
+      for (const el of targets) {
+        if (el.getBoundingClientRect().top - offset <= 0) current = el.id;
+        else break;
+      }
+      setActive(current);
+    };
+    let ticking = false;
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+    update();
+  }
+</script>
+
+<style>
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .toc li {
+    margin: 0;
+  }
+  .toc a {
+    display: block;
+    padding: 0.3rem 0 0.3rem var(--space-3);
+    border-inline-start: 2px solid transparent;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    text-decoration: none;
+  }
+  .toc .depth-3 a {
+    padding-inline-start: var(--space-6);
+    font-size: var(--text-xs);
+  }
+  .toc a:hover {
+    color: var(--color-text);
+  }
+  .toc a[aria-current='true'] {
+    color: var(--color-link);
+    border-inline-start-color: var(--color-link);
+  }
+
+  .toc-sidebar {
+    position: sticky;
+    top: var(--space-8);
+    max-height: calc(100dvh - var(--space-16));
+    overflow-y: auto;
+    border-inline-start: 1px solid var(--color-border);
+  }
+  .toc-sidebar h2 {
+    margin: 0 0 var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-subtle);
+  }
+  .toc-sidebar a {
+    margin-inline-start: -1px;
+  }
+
+  .toc-inline {
+    max-width: var(--measure);
+    margin-bottom: var(--space-8);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+  }
+  .toc-inline summary {
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+  .toc-inline nav {
+    padding: 0 var(--space-4) var(--space-3);
+  }
+  .toc-inline a {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+  .toc-inline .depth-3 a {
+    padding-inline-start: var(--space-4);
+  }
+</style>

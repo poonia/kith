@@ -79,3 +79,43 @@
 .prose th {
   font-weight: 600;
 }
+
+/* Headings with a hover/focus "link to section" anchor (rehype-heading-anchors). */
+.prose .heading-wrapper {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-block-start: 2em;
+}
+.prose .heading-wrapper + * {
+  margin-block-start: 0.75em;
+}
+.prose .heading-wrapper > :is(h2, h3, h4) {
+  margin: 0;
+}
+.prose .heading-anchor {
+  flex: none;
+  display: inline-flex;
+  align-self: center;
+  padding: 0.15em;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-subtle);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.prose .heading-wrapper:hover .heading-anchor,
+.prose .heading-anchor:focus-visible {
+  opacity: 1;
+}
+.prose .heading-anchor:hover {
+  color: var(--color-link);
+}
+@media (hover: none) {
+  .prose .heading-anchor {
+    opacity: 0.6;
+  }
+}
+.prose :is(h2, h3, h4) {
+  scroll-margin-top: var(--space-8);
+}

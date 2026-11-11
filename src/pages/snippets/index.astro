@@ -10,9 +10,11 @@ const entries = await getPublished('snippets');
   <div class="container listing">
     <header class="measure">
       <h1>Snippets</h1>
-      <p class="muted">Short notes, TILs and reusable code.</p>
+      <p class="muted">Short notes, TILs and reusable code. Browse by <a href="/tags/">tag</a>.</p>
     </header>
-    <EntryList entries={entries} base="/snippets/" />
+    <div class="measure">
+      <EntryList entries={entries} />
+    </div>
   </div>
 </BaseLayout>
 
@@ -30,8 +32,5 @@ const entries = await getPublished('snippets');
   }
   header p {
     margin: var(--space-2) 0 0;
-  }
-  .listing :global(.entries) {
-    max-width: var(--measure);
   }
 </style>

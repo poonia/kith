@@ -28,6 +28,7 @@
   "publishing_mode": "editorial_workflow",
   "collections": [
     "blog",
-    "snippets"
+    "snippets",
+    "pages"
   ]
 }

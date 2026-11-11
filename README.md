@@ -12,8 +12,8 @@ Personal blog built with [Astro](https://astro.build), content managed with [Git
 | ----------------- | -------------------------------------------------- |
 | `npm install`     | Install dependencies                               |
 | `npm run dev`     | Dev server at http://localhost:4321 (shows drafts) |
-| `npm run build`   | Type-check, then build to `dist/` (no drafts)      |
-| `npm run preview` | Serve the production build locally                 |
+| `npm run build`   | Type-check, build to `dist/` (no drafts), index search |
+| `npm run preview` | Serve the production build locally (search works here) |
 
 ## Content
 
@@ -21,10 +21,12 @@ Personal blog built with [Astro](https://astro.build), content managed with [Git
 | ---------- | ----------------------- | ----------------------------- |
 | Blog       | `src/content/blog/`     | Long-form articles            |
 | Snippets   | `src/content/snippets/` | Short notes, TILs, code       |
+| Pages      | `src/content/pages/`    | About, Now, Uses — `about.md` → `/about/` |
 
 - Files starting with `_` are ignored.
 - `draft: true` or a future `pubDate` → visible in `npm run dev`, excluded from production builds.
 - Frontmatter is validated at build time by `src/content.config.ts`. Keep it in sync with `.gitcms/sites/kith/collections/*.jsonc`.
+- About / Now / Uses start as drafts with placeholder text. Their header/footer links appear once published.
 - `src/content/blog/kitchen-sink.md` is a permanent draft that uses every supported element — check it after styling changes.
 
 ## Writing cheat sheet
@@ -50,6 +52,17 @@ Everything is plain Markdown, so it works in the GitCMS editor. See `src/content
 Mermaid needs Chromium at build time: `npx playwright install chromium` (once locally; CI does it in the workflow). Rendered diagrams are cached in `node_modules/.cache/kith-mermaid`.
 
 If a Markdown plugin changes, clear Astro's content cache: `rm -rf .astro node_modules/.astro`.
+
+## Reader features
+
+- **Search** — [Pagefind](https://pagefind.app) indexes the built site after `astro build` (`⌘K`, `Ctrl K` or `/`). Only post, snippet and page bodies are indexed; mark anything else with `data-pagefind-ignore`. Not available in `npm run dev`.
+- **Table of contents** — h2/h3 headings; sticky sidebar on wide screens, collapsible block on small ones. Shown when a post has 2+ headings.
+- **Reading time, heading anchors, previous/next, tag pages, year-grouped archive** — automatic.
+- **Comments** — [giscus](https://giscus.app) (GitHub Discussions), lazy-loaded and synced with the theme. Off until configured:
+  1. Enable Discussions on the repo and create a `Comments` category (Announcement type).
+  2. Install the [giscus app](https://github.com/apps/giscus) on the repo.
+  3. Copy `repoId` and `categoryId` from giscus.app into `GISCUS` in `src/consts.ts`.
+  Per post, `comments: false` turns them off.
 
 ## Images
 

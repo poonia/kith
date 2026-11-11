@@ -1,8 +1,12 @@
 ---
 import { NAV, SITE } from '@/consts';
+import { getPublishedPages } from '@/lib/content';
 import ThemeToggle from './ThemeToggle.astro';
+import Search from './Search.astro';
 
 const path = Astro.url.pathname;
+const published = new Set((await getPublishedPages()).map((p) => p.id));
+const nav = NAV.filter((item) => !('page' in item) || published.has(item.page));
 ---
 
 <header class="site-header">
@@ -11,7 +15,7 @@ const path = Astro.url.pathname;
     <nav aria-label="Main">
       <ul>
         {
-          NAV.map(({ href, label }) => (
+          nav.map(({ href, label }) => (
             <li>
               <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>
                 {label}
@@ -20,6 +24,7 @@ const path = Astro.url.pathname;
           ))
         }
       </ul>
+      <Search />
       <ThemeToggle />
     </nav>
   </div>
@@ -41,6 +46,7 @@ const path = Astro.url.pathname;
     letter-spacing: -0.02em;
     color: var(--color-text);
     text-decoration: none;
+    white-space: nowrap;
   }
   nav {
     display: flex;
@@ -66,5 +72,10 @@ const path = Astro.url.pathname;
   nav a[aria-current='page'] {
     color: var(--color-text);
     background: var(--color-surface-strong);
+  }
+  @media (max-width: 30rem) {
+    nav a {
+      padding-inline: var(--space-2);
+    }
   }
 </style>

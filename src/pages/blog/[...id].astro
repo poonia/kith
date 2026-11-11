@@ -5,14 +5,24 @@ import EntryLayout from '@/layouts/EntryLayout.astro';
 import { getPublished } from '@/lib/content';
 
 export const getStaticPaths = (async () => {
-  const entries = await getPublished('blog');
-  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+  const entries = await getPublished('blog'); // newest first
+  return entries.map((entry, i) => ({
+    params: { id: entry.id },
+    props: { entry, newer: entries[i - 1], older: entries[i + 1] },
+  }));
 }) satisfies GetStaticPaths;
 
-const { entry } = Astro.props;
-const { Content, remarkPluginFrontmatter } = await render(entry);
+const { entry, newer, older } = Astro.props;
+const { Content, headings, remarkPluginFrontmatter: fm } = await render(entry);
 ---
 
-<EntryLayout entry={entry} hasMath={Boolean(remarkPluginFrontmatter.hasMath)}>
+<EntryLayout
+  entry={entry}
+  headings={headings}
+  readingTime={fm.readingTime as number}
+  hasMath={Boolean(fm.hasMath)}
+  newer={newer}
+  older={older}
+>
   <Content />
 </EntryLayout>

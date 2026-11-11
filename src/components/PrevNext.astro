@@ -1,0 +1,76 @@
+---
+import { entryHref, type AnyEntry } from '@/lib/tags';
+
+interface Props {
+  newer?: AnyEntry;
+  older?: AnyEntry;
+}
+const { newer, older } = Astro.props;
+---
+
+{
+  (newer || older) && (
+    <nav class="prev-next" aria-label="More posts">
+      {older ? (
+        <a class="older" href={entryHref(older)} rel="prev">
+          <span class="label">← Older</span>
+          <span class="title">{older.data.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {newer && (
+        <a class="newer" href={entryHref(newer)} rel="next">
+          <span class="label">Newer →</span>
+          <span class="title">{newer.data.title}</span>
+        </a>
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .prev-next {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    max-width: var(--measure);
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+  }
+  a:hover {
+    border-color: var(--color-link);
+  }
+  .newer {
+    grid-column: 2;
+    text-align: end;
+  }
+  .label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+  .title {
+    color: var(--color-text);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+  @media (max-width: 40rem) {
+    .prev-next {
+      grid-template-columns: 1fr;
+    }
+    .newer {
+      grid-column: auto;
+      grid-row: 1;
+    }
+  }
+</style>

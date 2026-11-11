@@ -1,11 +1,32 @@
 ---
 import { SITE } from '@/consts';
+import { getPublishedPages } from '@/lib/content';
+
 const year = new Date().getFullYear();
+const published = new Set((await getPublishedPages()).map((p) => p.id));
+const links = [
+  { href: '/blog/', label: 'Archive' },
+  { href: '/tags/', label: 'Tags' },
+  ...(published.has('now') ? [{ href: '/now/', label: 'Now' }] : []),
+  ...(published.has('uses') ? [{ href: '/uses/', label: 'Uses' }] : []),
+  { href: SITE.github, label: 'GitHub' },
+];
 ---
 
 <footer class="site-footer">
-  <div class="container">
+  <div class="container inner">
     <p>© {year} {SITE.author}</p>
+    <nav aria-label="Footer">
+      <ul>
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </div>
 </footer>
 
@@ -16,7 +37,31 @@ const year = new Date().getFullYear();
     color: var(--color-text-muted);
     font-size: var(--text-sm);
   }
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-6);
+    padding-block: var(--space-6);
+  }
   p {
-    margin: var(--space-6) 0;
+    margin: 0;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  a {
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-link);
+    text-decoration: underline;
   }
 </style>

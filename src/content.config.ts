@@ -51,4 +51,15 @@ const snippets = defineCollection({
   }),
 });
 
-export const collections = { blog, snippets };
+/** Standalone pages: About, Now, Uses. Served at /<file-name>/. */
+const pages = defineCollection({
+  loader: glob({ base: './src/content/pages', pattern: '**/[^_]*.md' }),
+  schema: z.object({
+    title: z.string().min(1).max(120),
+    description: z.string().min(1).max(160),
+    updatedDate: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { blog, snippets, pages };

@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
-import { unified } from '@astrojs/markdown-remark';
+import { unified, rehypeHeadingIds } from '@astrojs/markdown-remark';
 import expressiveCode from 'astro-expressive-code';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -10,6 +10,7 @@ import { remarkMermaid } from './src/plugins/remark-mermaid.mjs';
 import { remarkFileTree } from './src/plugins/remark-file-tree.mjs';
 import { remarkFlags } from './src/plugins/remark-flags.mjs';
 import { rehypeFigure } from './src/plugins/rehype-figure.mjs';
+import { rehypeHeadingAnchors } from './src/plugins/rehype-heading-anchors.mjs';
 import { iconSvg } from './src/lib/icons.mjs';
 
 /** @param {string} name */
@@ -65,6 +66,8 @@ export default defineConfig({
         remarkFlags,
       ],
       rehypePlugins: [
+        rehypeHeadingIds,
+        rehypeHeadingAnchors,
         rehypeFigure,
         [rehypeKatex, { output: 'html', strict: false }],
         [

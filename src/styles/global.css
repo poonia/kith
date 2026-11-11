@@ -111,3 +111,15 @@ video {
     scroll-behavior: auto !important;
   }
 }
+
+/* Cross-document view transitions: a soft cross-fade between pages in supporting
+   browsers; no JS router, and other browsers navigate normally. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 180ms;
+  }
+}
