@@ -8,7 +8,9 @@ import TableOfContents from '@/components/TableOfContents.astro';
 import PrevNext from '@/components/PrevNext.astro';
 import Comments from '@/components/Comments.astro';
 import { resolveImage } from '@/lib/images';
-import type { AnyEntry } from '@/lib/tags';
+import { entryHref, type AnyEntry } from '@/lib/tags';
+import { ogImagePath } from '@/lib/og';
+import { absolute, personLd } from '@/lib/seo';
 import katexCss from 'katex/dist/katex.min.css?url';
 
 interface Props {
@@ -30,9 +32,36 @@ const hero = 'heroImage' in entry.data ? resolveImage(entry.data.heroImage) : un
 const heroAlt = 'heroAlt' in entry.data ? entry.data.heroAlt : undefined;
 const showComments = 'comments' in entry.data ? entry.data.comments : true;
 const source = 'source' in entry.data ? entry.data.source : undefined;
+
+const url = absolute(entryHref(entry), Astro.site);
+const image = ogImagePath(entry.collection, entry.id);
+const jsonLd = {
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  url,
+  mainEntityOfPage: url,
+  datePublished: pubDate.toISOString(),
+  dateModified: (updatedDate ?? pubDate).toISOString(),
+  author: personLd(Astro.site),
+  publisher: personLd(Astro.site),
+  image: absolute(image, Astro.site),
+  keywords: tags.join(', ') || undefined,
+  inLanguage: 'en',
+  ...(readingTime ? { timeRequired: `PT${readingTime}M` } : {}),
+};
 ---
 
-<BaseLayout title={title} description={description} canonical={canonical} noindex={draft}>
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  noindex={draft}
+  type="article"
+  image={image}
+  article={{ published: pubDate, modified: updatedDate, tags }}
+  jsonLd={jsonLd}
+>
   {hasMath && <link slot="head" rel="stylesheet" href={katexCss} />}
   <div class="container entry">
     <article class="entry-main" data-pagefind-body>

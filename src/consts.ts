@@ -5,6 +5,8 @@ export const SITE = {
   lang: 'en',
   locale: 'en-US',
   github: 'https://github.com/poonia',
+  /** Optional, e.g. '@handle' — adds twitter:creator. */
+  twitter: '',
 } as const;
 
 /** Main navigation. Entries from the `pages` collection are only shown once published. */

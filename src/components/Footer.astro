@@ -9,6 +9,7 @@ const links = [
   { href: '/tags/', label: 'Tags' },
   ...(published.has('now') ? [{ href: '/now/', label: 'Now' }] : []),
   ...(published.has('uses') ? [{ href: '/uses/', label: 'Uses' }] : []),
+  { href: '/rss.xml', label: 'RSS' },
   { href: SITE.github, label: 'GitHub' },
 ];
 ---

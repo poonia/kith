@@ -64,6 +64,16 @@ If a Markdown plugin changes, clear Astro's content cache: `rm -rf .astro node_m
   3. Copy `repoId` and `categoryId` from giscus.app into `GISCUS` in `src/consts.ts`.
   Per post, `comments: false` turns them off.
 
+## SEO and feeds
+
+All generated at build time — nothing to maintain per post:
+
+- **Meta**: title, description, canonical (override with `canonical` for cross-posts), Open Graph, Twitter card, `article:*` tags. Set `SITE.twitter` in `src/consts.ts` to add `twitter:creator`.
+- **Social images**: a 1200×630 PNG per post, snippet and page at `/og/<collection>/<id>.png` (`src/lib/og.ts`, Satori + sharp); `/og/default.png` for everything else.
+- **Structured data**: `BlogPosting` on posts and snippets, `WebSite` + `Person` on the home page, `ProfilePage` on About.
+- **Feeds**: `/rss.xml` (blog) and `/snippets/rss.xml` — summary feeds (title, description, link).
+- **Sitemap** `/sitemap-index.xml` (drafts, 404 and OG images excluded) and **`/robots.txt`**.
+
 ## Images
 
 Upload through GitCMS (or drop files into `src/assets/images/`) and reference them as `/images/<path>`:

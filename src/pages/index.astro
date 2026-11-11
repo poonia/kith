@@ -3,12 +3,18 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import EntryList from '@/components/EntryList.astro';
 import { getPublished } from '@/lib/content';
 import { SITE } from '@/consts';
+import { absolute, personLd } from '@/lib/seo';
 
 const posts = (await getPublished('blog')).slice(0, 5);
 const snippets = (await getPublished('snippets')).slice(0, 5);
+
+const jsonLd = [
+  { '@type': 'WebSite', name: SITE.title, url: absolute('/', Astro.site), description: SITE.description, inLanguage: 'en', author: personLd(Astro.site) },
+  personLd(Astro.site),
+];
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={jsonLd}>
   <div class="container home">
     <section class="intro measure">
       <h1>{SITE.title}</h1>

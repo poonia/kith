@@ -2,6 +2,7 @@
 import { defineConfig, fontProviders } from 'astro/config';
 import { unified, rehypeHeadingIds } from '@astrojs/markdown-remark';
 import expressiveCode from 'astro-expressive-code';
+import sitemap from '@astrojs/sitemap';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import rehypeCallouts from 'rehype-callouts';
@@ -24,7 +25,13 @@ export default defineConfig({
   prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 
   // Must come before other integrations that touch Markdown. Options live in ec.config.mjs.
-  integrations: [expressiveCode()],
+  integrations: [
+    expressiveCode(),
+    sitemap({
+      // Feeds, OG images and the 404 page don't belong in the sitemap.
+      filter: (page) => !/\/(404|og)\//.test(page) && !page.endsWith('/404/'),
+    }),
+  ],
 
   // Self-hosted variable fonts (latin), served from our own origin — no third-party requests.
   fonts: [

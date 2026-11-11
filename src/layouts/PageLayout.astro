@@ -1,17 +1,26 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import FormattedDate from '@/components/FormattedDate.astro';
+import { ogImagePath } from '@/lib/og';
+import { personLd } from '@/lib/seo';
 
 interface Props {
+  id: string;
   title: string;
   description: string;
   updatedDate?: Date;
   draft?: boolean;
 }
-const { title, description, updatedDate, draft = false } = Astro.props;
+const { id, title, description, updatedDate, draft = false } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} noindex={draft}>
+<BaseLayout
+  title={title}
+  description={description}
+  noindex={draft}
+  image={ogImagePath('pages', id)}
+  jsonLd={id === 'about' ? { '@type': 'ProfilePage', mainEntity: personLd(Astro.site) } : undefined}
+>
   <article class="container page" data-pagefind-body>
     <header>
       {draft && <p class="draft" data-pagefind-ignore>Draft — not visible in production</p>}
