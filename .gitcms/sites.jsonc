@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sites": [
+    {
+      "key": "kith",
+      "display_name": "kith.dev",
+      "website_url": "https://kith.dev",
+      "root_path": ""
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "label": "Snippets",
+  "git_path": "/src/content/snippets/",
+  "file_extension": ".mdx",
+  "filename_pattern": "",
+  "collection_type": "flat",
+  "frontmatter_schema": [
+    {
+      "name": "title",
+      "type": "title",
+      "label": "Title",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "richtext",
+      "label": "Description",
+      "required": false
+    },
+    {
+      "name": "image",
+      "type": "image",
+      "label": "Image",
+      "required": false
+    },
+    {
+      "name": "source",
+      "type": "text",
+      "label": "Source",
+      "required": false
+    }
+  ]
+}

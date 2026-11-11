@@ -1,0 +1,39 @@
+{
+  "label": "Blog",
+  "git_path": "/src/content/blog/",
+  "file_extension": ".md",
+  "filename_pattern": "",
+  "collection_type": "flat",
+  "frontmatter_schema": [
+    {
+      "name": "title",
+      "type": "title",
+      "label": "Title",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "richtext",
+      "label": "Description",
+      "required": false
+    },
+    {
+      "name": "tags",
+      "type": "multiselect",
+      "label": "Tags",
+      "required": false,
+      "options": [
+        "AEM"
+      ],
+      "allowCustom": true,
+      "color": "blue"
+    },
+    {
+      "name": "pubDate",
+      "type": "datetime",
+      "label": "Pub Date",
+      "required": false,
+      "withTime": true
+    }
+  ]
+}
